@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class ControllerDatabase {
-	private static final String DATABASE_LOCATION = "jdbc:sqlite:resources/database/test.db";
+	private static final String DATABASE_LOCATION = "jdbc:sqlite:Stoc/resources/database/test.db";
 
 	public static void main(String args[]) {
 		// createTable();
-		// insertData();
+		//insertData();
 		readData();
 	}
 
@@ -58,6 +58,10 @@ public class ControllerDatabase {
 
 			sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "
 					+ "VALUES (4, 'Mark', 25, 'Rich-Mond ', 65000.00 );";
+			stmt.executeUpdate(sql);
+			
+			sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "
+					+ "VALUES (5, 'Alex', 25, 'Norway ', 65000.00 );";
 			stmt.executeUpdate(sql);
 
 			stmt.close();

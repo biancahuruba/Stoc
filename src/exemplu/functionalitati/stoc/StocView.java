@@ -28,9 +28,9 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
-import com.github.lgooddatepicker.components.DatePicker;
-
 import exemplu.common.models.MyTableModel;
+
+import com.github.lgooddatepicker.components.DatePicker;
 
 public class StocView extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -195,7 +195,8 @@ public class StocView extends JPanel {
 
 		datePicker = new DatePicker();
 		add(datePicker, constrains(3, 1));
-
+		
+		
 		add(labelAprobat, constrains(2, 2, INSET_SPACE));
 
 		checkBoxAprobat = new JCheckBox();
