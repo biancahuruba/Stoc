@@ -46,7 +46,6 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		view.stopEditing();
-		System.out.println(displayUpdateField());
 		System.err.println(model.toString());
 	}
 
