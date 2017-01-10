@@ -46,6 +46,7 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		view.stopEditing();
+		System.out.println(displayUpdateField());
 		System.err.println(model.toString());
 	}
 
@@ -84,5 +85,42 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 			targetField.setValue(newValue);
 			targetField.setChanged(true);
 		}
+	}
+	
+	private String displayUpdateField(){
+		final StringBuilder builder = new StringBuilder();
+		
+		if(model.getNume().isChanged()){
+			builder.append("Nume: " + model.getNume().getValue() + "\n");
+		}
+		
+		if(model.getPrenume().isChanged()){
+			builder.append("Prenume: " + model.getPrenume().getValue() + "\n");
+		}
+		
+		List<AngajatiRow> list=model.getTabeModel();
+		for(int i=0; i< 4; i++){
+			if(list.get(0).getAttribute(i).isChanged()){
+				builder.append("Tabel: \n");
+				builder.append(attributeName(i)+": "+list.get(0).getAttribute(i).getValue());
+			}
+		}
+		builder.append("\n");
+		return builder.toString();
+		
+	}
+	
+	private String attributeName(int i){
+		switch (i) {
+		case 0:
+			return "produs";
+		case 1:
+			return "pret";
+		case 2:
+			return "cantitate";
+		case 3:
+			return "comision";
+		}
+		return null;
 	}
 }

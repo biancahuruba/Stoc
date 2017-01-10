@@ -29,23 +29,36 @@ public class AngajatiView extends JPanel {
 	public AngajatiView(final DocumentListener listener, final ActionListener actionListener) {
 		setLayout(new GridBagLayout());
 
-		final JLabel jLabelNume = new JLabel("Nume:");
-		add(jLabelNume, getConstraints(0, 0));
-		jTextFieldNume = new JTextField(20);
-		jTextFieldNume.getDocument().addDocumentListener(listener);
-		jTextFieldNume.getDocument().putProperty(FIELD_KEY, FIELD_NUME);
-		add(jTextFieldNume, getConstraints(0, 1));
+		initFieldNume();
+		initFieldPrenume();
+		initButton(actionListener);
 
-		final JLabel jLabelPrenume = new JLabel("Prenume:");
-		add(jLabelPrenume, getConstraints(1, 0));
-		jTextFieldPrenume = new JTextField(20);
+		jTextFieldNume.getDocument().addDocumentListener(listener);
 		jTextFieldPrenume.getDocument().addDocumentListener(listener);
-		jTextFieldPrenume.getDocument().putProperty(FIELD_KEY, FIELD_PRENUME);
-		add(jTextFieldPrenume, getConstraints(1, 1));
 
 		table = new JTable();
 		add(new JScrollPane(table), getFillerConstraints(2, 0));
 
+	}
+
+	private void initFieldNume() {
+		final JLabel jLabelNume = new JLabel("Nume:");
+		add(jLabelNume, getConstraints(0, 0));
+		jTextFieldNume = new JTextField(20);
+		jTextFieldNume.getDocument().putProperty(FIELD_KEY, FIELD_NUME);
+		add(jTextFieldNume, getConstraints(0, 1));
+
+	}
+
+	private void initFieldPrenume() {
+		final JLabel jLabelPrenume = new JLabel("Prenume:");
+		add(jLabelPrenume, getConstraints(1, 0));
+		jTextFieldPrenume = new JTextField(20);
+		jTextFieldPrenume.getDocument().putProperty(FIELD_KEY, FIELD_PRENUME);
+		add(jTextFieldPrenume, getConstraints(1, 1));
+	}
+
+	private void initButton(final ActionListener actionListener) {
 		final JButton jButtonSave = new JButton("Salvare");
 		jButtonSave.addActionListener(actionListener);
 		add(jButtonSave, getConstraints(3, 0));

@@ -28,6 +28,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
+import com.github.lgooddatepicker.components.DatePicker;
+
 import exemplu.common.models.MyTableModel;
 
 public class StocView extends JPanel {
@@ -49,7 +51,7 @@ public class StocView extends JPanel {
 	/** check Aprobat. */
 	private transient JCheckBox checkBoxAprobat;
 	/** choose date. */
-	private JTextField datePicker;
+	private DatePicker datePicker;
 
 	private static final File file = new File("RowTable.txt");
 
@@ -191,7 +193,7 @@ public class StocView extends JPanel {
 
 		add(labelData, constrains(2, 1, INSET_SPACE));
 
-		datePicker = new JTextField();
+		datePicker = new DatePicker();
 		add(datePicker, constrains(3, 1));
 
 		add(labelAprobat, constrains(2, 2, INSET_SPACE));
