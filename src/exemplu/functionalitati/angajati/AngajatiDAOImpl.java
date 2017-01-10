@@ -185,7 +185,7 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 	}
 
 	@Override
-	public void editData(AngajatiModel angajat, String columnName, String columnValue) {
+	public void editData(AngajatiModel angajat, String columnName, String columnValue, int id) {
 		Connection dbConnection = null;
 		Statement stat = null;
 		try {
@@ -195,7 +195,7 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 			System.out.println("Opened database successfully");
 			stat = dbConnection.createStatement();
 			String sql = "UPDATE ANGAJATI SET " + columnName + " ='" + columnValue
-					+ "' WHERE NUME ='" + angajat.getNume().getValue()+ "';";
+					+ "' WHERE ID =" + id+ ";";
 			stat.executeUpdate(sql);
 
 			System.out.println("Record is edited from Angajati for: " + angajat.getNume().getValue() + " "
@@ -229,7 +229,7 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 	}
 
 	@Override
-	public void deleteData(AngajatiModel angajat) {
+	public void deleteData(int id) {
 		Connection dbConnection = null;
 		Statement stat = null;
 		try {
@@ -237,14 +237,12 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
 			dbConnection.setAutoCommit(false);
 			System.out.println("Opened database successfully");
+			
 			stat = dbConnection.createStatement();
-			String sql = "DELETE FROM ANGAJATI WHERE NUME='" + angajat.getNume().getValue() + "' AND PRENUME='"
-					+ angajat.getPrenume().getValue() + "';";
-
+			String sql = "DELETE FROM ANGAJATI WHERE ID=" +id+ "";
 			stat.executeUpdate(sql);
 
-			System.out.println("Record is deleted from Angajati for: " + angajat.getNume().getValue() + " "
-					+ angajat.getPrenume().getValue() + ".");
+			System.out.println("Record is deleted from Angajati.");
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
