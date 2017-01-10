@@ -8,37 +8,30 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import exemplu.common.interfaces.AngajatiDAO;
+import exemplu.common.interfaces.StocDAO;
 import exemplu.common.models.Attribute;
-import exemplu.functionalitati.angajati.AngajatiModel;
+import exemplu.functionalitati.stoc.StocModel;
 
-public class AngajatiDAOImpl implements AngajatiDAO {
+public class StocDAOImpl implements StocDAO {
 
 	@Override
-	public void insertData(AngajatiModel angajat) {
+	public void insertData(StocModel stoc) {
 		Connection dbConnection = null;
 		Statement stat = null;
 
-
+		String sql = "INSERT INTO STOC(COD,PRODUS,CATEGORIE,PRET,DATA) VALUES('" + stoc.getCod().getValue() + "'," + "'"
+				+ stoc.getProdus().getValue() + "'" + "," + "'" + stoc.getCategorie().getValue() + "'" + "," + "'"
+				+ stoc.getPret().getValue() + "'" + ",'" + stoc.getData().getValue() + "'," + ");";
 		try {
 			Class.forName("org.sqlite.JDBC");
 			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
 			dbConnection.setAutoCommit(false);
 			System.out.println("Opened database successfully");
-			
-			stat=dbConnection.createStatement();
-			String sql = "INSERT INTO ANGAJATI(ID,NUME, PRENUME, PRODUS, PRET, CANTITATE, COMISION) VALUES( 1,'"
-					+ angajat.getNume().getValue() + "'," + "'" + angajat.getPrenume().getValue() + "'" + "," + "'"
-					+ angajat.getTabeModel().get(0).getAttribute(0).getValue() + "'" + "," + "'"
-					+ angajat.getTabeModel().get(0).getAttribute(1).getValue() + "'" + ",'"
-					+ angajat.getTabeModel().get(0).getAttribute(2).getValue() + "'," + "'"
-					+ angajat.getTabeModel().get(0).getAttribute(3).getValue() + "'" + ");";
 
-			//stat = dbConnection.prepareStatement(sql);
+			stat = dbConnection.prepareStatement(sql);
 			stat.executeUpdate(sql);
 
-			System.out.println("Record is insert into Employees table for employee: " + angajat.getNume() + " "
-					+ angajat.getPrenume());
+			System.out.println("Record is insert into Stoc table.");
 			dbConnection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -63,12 +56,12 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 	}
 
 	@Override
-	public List<AngajatiModel> readData() {
+	public List<StocModel> readData() {
 		Connection dbConnection = null;
 		Statement stat = null;
 		ResultSet rs = null;
 
-		List<AngajatiModel> list = new ArrayList<>();
+		List<StocModel> list = new ArrayList<>();
 
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -76,42 +69,36 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 			dbConnection.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 
-			String sql = "SELECT * FROM ANGAJATI;";
+			String sql = "SELECT * FROM STOC;";
 
 			stat = dbConnection.prepareStatement(sql);
 			rs = stat.executeQuery(sql);
 
-			Attribute aNume = new Attribute();
-			Attribute aPrenume = new Attribute();
+			Attribute aCod = new Attribute();
 			Attribute aProdus = new Attribute();
+			Attribute aCategorie = new Attribute();
 			Attribute aPret = new Attribute();
-			Attribute aCantitate = new Attribute();
-			Attribute aComision = new Attribute();
+			Attribute aData = new Attribute();
 
 			while (rs.next()) {
-				AngajatiModel angajat = new AngajatiModel();
-				aNume.setValue(rs.getString("NUME"));
-				angajat.setNume(aNume);
+				StocModel stoc = new StocModel();
 
-				aPrenume.setValue(rs.getString("PRENUME"));
-				angajat.setNume(aPrenume);
+				aCod.setValue(rs.getString("COD"));
+				stoc.setCod(aCod);
 
 				aProdus.setValue(rs.getString("PRODUS"));
-				angajat.setNume(aProdus);
+				stoc.setProdus(aProdus);
+
+				aCategorie.setValue(rs.getString("CATEGORIE"));
+				stoc.setCategorie(aCategorie);
 
 				aPret.setValue(rs.getString("PRET"));
-				angajat.setNume(aPret);
+				stoc.setPret(aPret);
 
-				aPret.setValue(rs.getString("PRET"));
-				angajat.setNume(aPret);
+				aData.setValue(rs.getString("DATA"));
+				stoc.setData(aData);
 
-				aCantitate.setValue(rs.getString("CANTITATE"));
-				angajat.setNume(aCantitate);
-
-				aComision.setValue(rs.getString("COMISION"));
-				angajat.setNume(aComision);
-
-				list.add(angajat);
+				list.add(stoc);
 
 			}
 		} catch (SQLException e) {
@@ -145,7 +132,7 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 	}
 
 	@Override
-	public void editData(AngajatiModel angajat, String columnName, String columnValue) {
+	public void editData(StocModel stoc, String columnName, String columnValue) {
 		Connection dbConnection = null;
 		Statement stat = null;
 		try {
@@ -154,16 +141,13 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 			dbConnection.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 
-			String sql = "UPDATE ANGAJATI SET" + columnName.toUpperCase() + " =" + columnValue.toUpperCase()
-					+ " WHERE NUME='" + angajat.getNume().getValue() + "' AND PRENUME='"
-					+ angajat.getPrenume().getValue() + "';";
+			String sql = "UPDATE STOC SET" + columnName.toUpperCase() + " =" + columnValue.toUpperCase()
+					+ " WHERE COD='" + stoc.getCod().getValue() + "';";
 
 			stat = dbConnection.prepareStatement(sql);
 			stat.executeUpdate(sql);
 
-			System.out.println("Record is edited from Angajati for: " + angajat.getNume().getValue() + " "
-					+ angajat.getPrenume().getValue() + ".");
-
+			System.out.println("Record is edited for Stoc.");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -192,7 +176,8 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 	}
 
 	@Override
-	public void deleteData(AngajatiModel angajat) {
+	public void deleteData(StocModel stoc) {
+
 		Connection dbConnection = null;
 		Statement stat = null;
 		try {
@@ -201,14 +186,12 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 			dbConnection.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 
-			String sql = "DELETE FROM ANGAJATI WHERE NUME='" + angajat.getNume().getValue() + "' AND PRENUME='"
-					+ angajat.getPrenume().getValue() + "';";
+			String sql = "DELETE FROM STOC WHERE COD='" + stoc.getCod().getValue() + "';";
 
 			stat = dbConnection.prepareStatement(sql);
 			stat.executeUpdate(sql);
 
-			System.out.println("Record is deleted from Angajati for: " + angajat.getNume().getValue() + " "
-					+ angajat.getPrenume().getValue() + ".");
+			System.out.println("Record is deleted from Stoc for code  " + stoc.getCod().getValue() + ".");
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

@@ -2,18 +2,18 @@ package exemplu.common.interfaces;
 
 import java.util.List;
 
-import exemplu.functionalitati.angajati.AngajatiModel;
+import exemplu.functionalitati.stoc.StocModel;
 
 public interface StocDAO {
 
-	public void insertData(AngajatiModel angajat);
+	public void insertData(StocModel stoc);
 
-	public List<AngajatiModel> readData();
+	public List<StocModel> readData();
 
-	public void editData(AngajatiModel angajat,String columnName, String columnValue);
+	public void editData(StocModel stoc,String columnName, String columnValue);
 
 	public void updateDatabase();
 	
-	public void deleteData(AngajatiModel angajat);
+	public void deleteData(StocModel stoc);
 
 }

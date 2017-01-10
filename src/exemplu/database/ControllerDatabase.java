@@ -4,17 +4,54 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import exemplu.common.models.Attribute;
+import exemplu.functionalitati.angajati.AngajatiModel;
+import exemplu.functionalitati.angajati.AngajatiRow;
 
 public class ControllerDatabase {
 	private static final String DATABASE_LOCATION = "jdbc:sqlite:Stoc/resources/database/test.db";
 
 	public static void main(String args[]) {
-		// createTable();
-		//insertData();
-		readData();
+		//createTables();
+		// insertData();
+		//readData();
+		AngajatiModel angajat=new AngajatiModel();
+		AngajatiRow angajatiRow=new AngajatiRow();
+		AngajatiDAOImpl dao=new AngajatiDAOImpl();
+		
+		Attribute nume=new Attribute();
+		Attribute prenume=new Attribute();
+		
+		List<AngajatiRow> list=new ArrayList<>();
+
+		nume.setValue("Huruba");
+		prenume.setValue("Bianca");
+		
+		//Produsul
+		angajatiRow.getAttribute(0).setValue("Apa");
+		//Pretul
+		angajatiRow.getAttribute(1).setValue("1");
+		//Cantitate
+		angajatiRow.getAttribute(2).setValue("3");
+		//Comision
+		angajatiRow.getAttribute(3).setValue("0.34");
+		
+		list.add(angajatiRow);
+		
+		
+		angajat.setNume(nume);
+		angajat.setPrenume(prenume);
+		angajat.setTabelModel(list);
+		
+		dao.insertData(angajat);
+		
+		
 	}
 
-	public static void createTable() {
+	public static void createTables() {
 		Connection c = null;
 		Statement stmt = null;
 		try {
@@ -27,6 +64,12 @@ public class ControllerDatabase {
 					+ " NAME           TEXT    NOT NULL, " + " AGE            INT     NOT NULL, "
 					+ " ADDRESS        CHAR(50), " + " SALARY         REAL)";
 			stmt.executeUpdate(sql);
+
+			sql = "CREATE TABLE ANGAJATI" + "(ID INT PRIMARY KEY     NOT NULL," + "NUME   VARCHAR(40),"
+					+ "PRENUME     VARCHAR(40)," + "PRODUS    VARCHAR(40)," + "PRET   VARCHAR(40),"
+					+ "CANTITATE   VARCHAR(40)," + "COMISION   VARCHAR(40))";
+			stmt.executeUpdate(sql);
+			
 			stmt.close();
 			c.close();
 		} catch (Exception e) {
@@ -34,6 +77,7 @@ public class ControllerDatabase {
 			System.exit(0);
 		}
 		System.out.println("Table created successfully");
+
 	}
 
 	public static void insertData() {
@@ -59,9 +103,8 @@ public class ControllerDatabase {
 			sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "
 					+ "VALUES (4, 'Mark', 25, 'Rich-Mond ', 65000.00 );";
 			stmt.executeUpdate(sql);
-			
-			sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "
-					+ "VALUES (5, 'Alex', 25, 'Norway ', 65000.00 );";
+
+			sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) " + "VALUES (5, 'Alex', 25, 'Norway ', 65000.00 );";
 			stmt.executeUpdate(sql);
 
 			stmt.close();
