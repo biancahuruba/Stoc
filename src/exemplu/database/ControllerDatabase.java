@@ -16,56 +16,54 @@ public class ControllerDatabase {
 	private static final String DATABASE_LOCATION = "jdbc:sqlite:Stoc/resources/database/test.db";
 
 	public static void main(String args[]) {
-		 createTables();
+		// createTables();
 		// insertData();
 		// readData();
-//		AngajatiModel angajat = new AngajatiModel();
-//		AngajatiRow angajatiRow = new AngajatiRow();
-//		AngajatiDAOImpl dao = new AngajatiDAOImpl();
-//
-//		Attribute nume = new Attribute();
-//		Attribute prenume = new Attribute();
-//
-//		List<AngajatiRow> list = new ArrayList<>();
-//
-//		nume.setValue("Andrica");
-//		prenume.setValue("Andrei");
-//
-//		// Produsul
-//		angajatiRow.getAttribute(0).setValue("cana");
-//		// Pretul
-//		angajatiRow.getAttribute(1).setValue("14");
-//		// Cantitate
-//		angajatiRow.getAttribute(2).setValue("4");
-//		// Comision
-//		angajatiRow.getAttribute(3).setValue("0.6");
-//
-//		list.add(angajatiRow);
-//
-//		angajat.setNume(nume);
-//		angajat.setPrenume(prenume);
-//		angajat.setTabelModel(list);
-//
-//		//dao.editData(angajat,"PRENUME", "Ilie",3);
-//		 dao.insertData(angajat);
+		AngajatiModel angajat = new AngajatiModel();
+		AngajatiRow angajatiRow = new AngajatiRow();
+		AngajatiDAOImpl dao = new AngajatiDAOImpl();
 
-//		int row = dao.getDBRows();
-//		int j = 1;
-//		List<AngajatiModel> lAngajat = new ArrayList<AngajatiModel>();
-//		lAngajat = dao.readData();
-//		while (j <= row) {
-//			for (AngajatiModel angajatFromL : lAngajat) {
-//				System.out.print(j + ".");
-//				System.out.println(angajatFromL.toString());
-//				j++;
-//			}
-//		}
-		
-		//dao.deleteData(4);
-		
-	
+		Attribute nume = new Attribute();
+		Attribute prenume = new Attribute();
 
+		List<AngajatiRow> list = new ArrayList<>();
+
+		nume.setValue("Moca");
+		prenume.setValue("Laurentiu351");
+
+		// Produsul
+		angajatiRow.getAttribute(0).setValue("caiet");
+		// Pretul
+		angajatiRow.getAttribute(1).setValue("5");
+		// Cantitate
+		angajatiRow.getAttribute(2).setValue("20");
+		// Comision
+		angajatiRow.getAttribute(3).setValue("2.8");
+
+		list.add(angajatiRow);
+
+		angajat.setNume(nume);
+		angajat.setPrenume(prenume);
+		angajat.setTabelModel(list);
+
+		 dao.editData("PRENUME", "Maria",2);
+		// dao.insertData(angajat);
+
+		List<AngajatiModel> lAngajat = new ArrayList<AngajatiModel>();
+		List<Integer> lID = new ArrayList<>();
+
+		lAngajat = dao.readData();
+		lID = dao.listOfId();
+		int index = 0;
+		while (index < lID.size()) {
+			for (AngajatiModel angajatFromL : lAngajat) {
+				System.out.print(lID.get(index) + ".");
+				System.out.println(angajatFromL.toString());
+				index++;
+			}
+		}
 	}
+
 
 	public static void createTables() {
 		Connection c = null;
@@ -77,9 +75,9 @@ public class ControllerDatabase {
 
 			stmt = c.createStatement();
 
-			String sql = "CREATE TABLE ANGAJATI" + "(ID INTEGER PRIMARY KEY  AUTOINCREMENT   NOT NULL," + "NUME   VARCHAR(40),"
-					+ "PRENUME     VARCHAR(40)," + "PRODUS    VARCHAR(40)," + "PRET   VARCHAR(40),"
-					+ "CANTITATE   VARCHAR(40)," + "COMISION   VARCHAR(40))";
+			String sql = "CREATE TABLE ANGAJATI" + "(ID INTEGER PRIMARY KEY  AUTOINCREMENT   NOT NULL,"
+					+ "NUME   VARCHAR(40)," + "PRENUME     VARCHAR(40)," + "PRODUS    VARCHAR(40),"
+					+ "PRET   VARCHAR(40)," + "CANTITATE   VARCHAR(40)," + "COMISION   VARCHAR(40))";
 			stmt.executeUpdate(sql);
 
 			stmt.close();

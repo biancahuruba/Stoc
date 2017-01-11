@@ -10,7 +10,7 @@ public interface AngajatiDAO {
 
 	public List<AngajatiModel> readData();
 
-	public void editData(AngajatiModel angajat, String columnName, String columnValue, int id);
+	public void editData( String columnName, String columnValue, int id);
 
 	public void updateDatabase();
 
