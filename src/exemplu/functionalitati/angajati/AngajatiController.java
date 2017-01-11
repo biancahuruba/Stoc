@@ -17,10 +17,12 @@ import exemplu.common.models.RowMeta;
 public class AngajatiController implements ControllerInterface, ActionListener, DocumentListener {
 	private AngajatiView view;
 	private AngajatiModel model;
+	private AngajatiDAOImpl dao;
 
 	public AngajatiController() {
 		view = new AngajatiView(this, this);
 		model = new AngajatiModel();
+		dao=new AngajatiDAOImpl();
 		setMockData();
 	}
 
@@ -46,7 +48,8 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		view.stopEditing();
-		System.err.println(model.toString());
+		dao.insertData(model);
+		System.err.println("Inserted into db.");
 	}
 
 	@Override
