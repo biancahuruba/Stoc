@@ -65,11 +65,11 @@ public class AngajatiView extends JPanel {
 		
 		final JButton jButtonEdit= new JButton("Editare");
 		jButtonEdit.addActionListener(actionListener);
-		add(jButtonEdit, getConstraints(3, 1));
+		add(jButtonEdit, getConstraints(3,1));
 		
 		final JButton jButtonDelete= new JButton("Stergere");
 		jButtonDelete.addActionListener(actionListener);
-		add(jButtonDelete, getConstraints(3, 1));
+		add(jButtonDelete, getConstraints(3,2,13));
 
 	}
 	private GridBagConstraints getConstraints(final int row, final int column) {
@@ -80,6 +80,17 @@ public class AngajatiView extends JPanel {
 		constraints.insets = INSETS_DEFAULT;
 		return constraints;
 	}
+	
+	private GridBagConstraints getConstraints(final int row, final int column, int constrains) {
+		final GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = column;
+		constraints.gridy = row;
+		constraints.anchor = constrains;
+		constraints.insets = INSETS_DEFAULT;
+		return constraints;
+	}
+	
+	
 
 	private GridBagConstraints getFillerConstraints(final int row, final int column) {
 		final GridBagConstraints constraints = new GridBagConstraints();

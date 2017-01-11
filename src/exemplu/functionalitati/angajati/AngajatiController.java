@@ -47,20 +47,37 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 
 	@Override
 	public void actionPerformed(final ActionEvent event) {
+
 		if (event.getActionCommand().equals("Salvare")) {
 			view.stopEditing();
 			dao.insertData(model);
 			System.err.println("Inserted into db.");
 		}
 		if (event.getActionCommand().equals("Editare")) {
-			
+			int size = dao.listOfId().size();
+			int id = dao.listOfId().get(size - 1);
+			if (model.getNume().isChanged()) {
+				dao.editData("nume",model.getNume().getValue(), id);
+			}
+
+			if (model.getPrenume().isChanged()) {
+				dao.editData("prenume", model.getPrenume().getValue(), id);
+			}
+
+			List<AngajatiRow> list = model.getTabeModel();
+			for (int i = 0; i < 4; i++) {
+				if (list.get(0).getAttribute(i).isChanged()) {
+					dao.editData(attributeName(i), list.get(0).getAttribute(i).getValue(), id);
+				}
+			}
+
 		}
 		if (event.getActionCommand().equals("Stergere")) {
-			int size=dao.listOfId().size();
-			int id=dao.listOfId().get(size-1);
+			int size = dao.listOfId().size();
+			int id = dao.listOfId().get(size - 1);
 			dao.deleteData(id);
 		}
-		
+
 	}
 
 	@Override
