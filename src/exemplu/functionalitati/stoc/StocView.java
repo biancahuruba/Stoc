@@ -29,8 +29,12 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
 import exemplu.common.models.MyTableModel;
-
-import com.github.lgooddatepicker.components.DatePicker;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
 
 public class StocView extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -51,7 +55,7 @@ public class StocView extends JPanel {
 	/** check Aprobat. */
 	private transient JCheckBox checkBoxAprobat;
 	/** choose date. */
-	private DatePicker datePicker;
+	private javafx.scene.control.DatePicker datePicker;
 
 	private static final File file = new File("RowTable.txt");
 
@@ -192,16 +196,41 @@ public class StocView extends JPanel {
 		final JLabel labelAprobat = new JLabel("Aprobat");
 
 		add(labelData, constrains(2, 1, INSET_SPACE));
+		JFXPanel panel = new JFXPanel();
+		Platform.setImplicitExit(false);
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				initFX(panel);
+			}
+		});
+		
+		add(panel, constrains(3, 1));
 
-		datePicker = new DatePicker();
-		add(datePicker, constrains(3, 1));
-		
-		
 		add(labelAprobat, constrains(2, 2, INSET_SPACE));
 
 		checkBoxAprobat = new JCheckBox();
 		checkBoxAprobat.setActionCommand(Commands.ENABLE.toString());
 		add(checkBoxAprobat, constrains(3, 2));
+	}
+
+	private void initFX(JFXPanel fxPanel) {
+		Dimension size = new Dimension(175, 25);
+		fxPanel.setPreferredSize(size);
+		fxPanel.setSize(size);
+		fxPanel.setMaximumSize(size);
+		Scene scene = createScene();
+		fxPanel.setScene(scene);
+	}
+
+	private Scene createScene() {
+		final FlowPane root = new FlowPane();
+		root.setVgap(0);
+		root.setHgap(0);
+		final Scene scene = new Scene(root, Color.ALICEBLUE);
+		datePicker = new DatePicker();
+		root.getChildren().add(datePicker);
+		return (scene);
 	}
 
 	private GridBagConstraints initializeTable() {
