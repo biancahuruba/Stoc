@@ -62,8 +62,16 @@ public class AngajatiView extends JPanel {
 		final JButton jButtonSave = new JButton("Salvare");
 		jButtonSave.addActionListener(actionListener);
 		add(jButtonSave, getConstraints(3, 0));
-	}
+		
+		final JButton jButtonEdit= new JButton("Editare");
+		jButtonEdit.addActionListener(actionListener);
+		add(jButtonEdit, getConstraints(3, 1));
+		
+		final JButton jButtonDelete= new JButton("Stergere");
+		jButtonDelete.addActionListener(actionListener);
+		add(jButtonDelete, getConstraints(3, 1));
 
+	}
 	private GridBagConstraints getConstraints(final int row, final int column) {
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = column;

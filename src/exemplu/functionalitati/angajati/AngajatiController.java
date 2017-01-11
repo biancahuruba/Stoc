@@ -22,7 +22,7 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 	public AngajatiController() {
 		view = new AngajatiView(this, this);
 		model = new AngajatiModel();
-		dao=new AngajatiDAOImpl();
+		dao = new AngajatiDAOImpl();
 		setMockData();
 	}
 
@@ -47,9 +47,20 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 
 	@Override
 	public void actionPerformed(final ActionEvent event) {
-		view.stopEditing();
-		dao.insertData(model);
-		System.err.println("Inserted into db.");
+		if (event.getActionCommand().equals("Salvare")) {
+			view.stopEditing();
+			dao.insertData(model);
+			System.err.println("Inserted into db.");
+		}
+		if (event.getActionCommand().equals("Editare")) {
+			
+		}
+		if (event.getActionCommand().equals("Stergere")) {
+			int size=dao.listOfId().size();
+			int id=dao.listOfId().get(size-1);
+			dao.deleteData(id);
+		}
+		
 	}
 
 	@Override
@@ -88,31 +99,31 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 			targetField.setChanged(true);
 		}
 	}
-	
-	private String displayUpdateField(){
+
+	private String displayUpdateField() {
 		final StringBuilder builder = new StringBuilder();
-		
-		if(model.getNume().isChanged()){
+
+		if (model.getNume().isChanged()) {
 			builder.append("Nume: " + model.getNume().getValue() + "\n");
 		}
-		
-		if(model.getPrenume().isChanged()){
+
+		if (model.getPrenume().isChanged()) {
 			builder.append("Prenume: " + model.getPrenume().getValue() + "\n");
 		}
-		
-		List<AngajatiRow> list=model.getTabeModel();
-		for(int i=0; i< 4; i++){
-			if(list.get(0).getAttribute(i).isChanged()){
+
+		List<AngajatiRow> list = model.getTabeModel();
+		for (int i = 0; i < 4; i++) {
+			if (list.get(0).getAttribute(i).isChanged()) {
 				builder.append("Tabel: \n");
-				builder.append(attributeName(i)+": "+list.get(0).getAttribute(i).getValue());
+				builder.append(attributeName(i) + ": " + list.get(0).getAttribute(i).getValue());
 			}
 		}
 		builder.append("\n");
 		return builder.toString();
-		
+
 	}
-	
-	private String attributeName(int i){
+
+	private String attributeName(int i) {
 		switch (i) {
 		case 0:
 			return "produs";
