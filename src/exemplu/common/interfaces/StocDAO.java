@@ -10,10 +10,10 @@ public interface StocDAO {
 
 	public List<StocModel> readData();
 
-	public void editData(StocModel stoc,String columnName, String columnValue);
+	public void editData(String columnName, String columnValue, int id);
 
 	public void updateDatabase();
 	
-	public void deleteData(StocModel stoc);
+	public void deleteData(int id);
 
 }

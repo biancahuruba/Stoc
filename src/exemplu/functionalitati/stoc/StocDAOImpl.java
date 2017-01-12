@@ -24,9 +24,12 @@ public class StocDAOImpl implements StocDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
-			String sql = "INSERT INTO STOC(COD,PRODUS,CATEGORIE,PRET,DATA) VALUES('" + stoc.getCod().getValue() + "',"
-					+ "'" + stoc.getProdus().getValue() + "'" + "," + "'" + stoc.getCategorie().getValue() + "'" + ","
-					+ "'" + stoc.getPret().getValue() + "'" + ",'" + stoc.getData().getValue() + "'," + ");";
+			String sql = "INSERT INTO STOC(COD,PRODUS,CATEGORIE,PRET,DATA, MAGAZIN, LOCALITATE, CANTITATE) VALUES('"
+					+ stoc.getCod().getValue() + "'," + "'" + stoc.getProdus().getValue() + "'" + "," + "'"
+					+ stoc.getCategorie().getValue() + "'" + "," + "'" + stoc.getPret().getValue() + "'" + ",'"
+					+ stoc.getData().getValue() + "'," + stoc.getTableList().get(0).getAttribute(0).getValue() + "'"
+					+ "," + "'" + stoc.getTableList().get(0).getAttribute(1).getValue() + "'" + ",'"
+					+ stoc.getTableList().get(0).getAttribute(2).getValue() + "'" + ");";
 			stat.executeUpdate(sql);
 
 			System.out.println("Record is insert into Stoc table.");
@@ -59,7 +62,7 @@ public class StocDAOImpl implements StocDAO {
 		Statement stat = null;
 		ResultSet rs = null;
 
-		List<StocModel> list = new ArrayList<>();
+		final List<StocModel> list = new ArrayList<>();
 
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -71,14 +74,16 @@ public class StocDAOImpl implements StocDAO {
 			String sql = "SELECT * FROM STOC;";
 			rs = stat.executeQuery(sql);
 
-			Attribute aCod = new Attribute();
-			Attribute aProdus = new Attribute();
-			Attribute aCategorie = new Attribute();
-			Attribute aPret = new Attribute();
-			Attribute aData = new Attribute();
-
 			while (rs.next()) {
 				StocModel stoc = new StocModel();
+				DistributieMagazinModel distributie = new DistributieMagazinModel();
+				List<DistributieMagazinModel> row = new ArrayList<>();
+
+				Attribute aCod = new Attribute();
+				Attribute aProdus = new Attribute();
+				Attribute aCategorie = new Attribute();
+				Attribute aPret = new Attribute();
+				Attribute aData = new Attribute();
 
 				aCod.setValue(rs.getString("COD"));
 				stoc.setCod(aCod);
@@ -95,9 +100,17 @@ public class StocDAOImpl implements StocDAO {
 				aData.setValue(rs.getString("DATA"));
 				stoc.setData(aData);
 
+				distributie.getAttribute(0).setValue(rs.getString("MAGAZIN"));
+				distributie.getAttribute(1).setValue(rs.getString("LOCALITATE"));
+				distributie.getAttribute(2).setValue(rs.getString("CANTITATE"));
+				row.add(distributie);
+
+				stoc.setTableList(row);
+
 				list.add(stoc);
 
 			}
+			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -125,13 +138,14 @@ public class StocDAOImpl implements StocDAO {
 				}
 			}
 		}
-		return list;
+		return null;
 	}
 
 	@Override
-	public void editData(StocModel stoc, String columnName, String columnValue) {
+	public void editData(String columnName, String columnValue, int id) {
 		Connection dbConnection = null;
 		Statement stat = null;
+
 		try {
 			Class.forName("org.sqlite.JDBC");
 			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
@@ -139,10 +153,10 @@ public class StocDAOImpl implements StocDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
-			String sql = "UPDATE STOC SET" + columnName.toUpperCase() + " =" + columnValue.toUpperCase()
-					+ " WHERE COD='" + stoc.getCod().getValue() + "';";
+			String sql = "UPDATE STOC SET" + columnName + " ='" + columnValue + "' WHERE ID=" + id + ";";
 
 			stat.executeUpdate(sql);
+			dbConnection.commit();
 
 			System.out.println("Record is edited for Stoc.");
 		} catch (ClassNotFoundException e) {
@@ -173,10 +187,11 @@ public class StocDAOImpl implements StocDAO {
 	}
 
 	@Override
-	public void deleteData(StocModel stoc) {
+	public void deleteData(int id) {
 
 		Connection dbConnection = null;
 		Statement stat = null;
+
 		try {
 			Class.forName("org.sqlite.JDBC");
 			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
@@ -184,11 +199,12 @@ public class StocDAOImpl implements StocDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
-			String sql = "DELETE FROM STOC WHERE COD='" + stoc.getCod().getValue() + "';";
+			String sql = "DELETE FROM STOC WHERE ID=" + id + ";";
 
 			stat.executeUpdate(sql);
+			dbConnection.commit();
 
-			System.out.println("Record is deleted from Stoc for code  " + stoc.getCod().getValue() + ".");
+			System.out.println("Record is deleted from Stoc.  " );
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -210,6 +226,59 @@ public class StocDAOImpl implements StocDAO {
 				}
 			}
 		}
+	}
+	
+	public List<Integer> listOfId() {
+		Connection dbConnection = null;
+		Statement stat = null;
+		ResultSet rs = null;
+
+		List<Integer> list = new ArrayList<>();
+
+		try {
+			Class.forName("org.sqlite.JDBC");
+			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
+			dbConnection.setAutoCommit(false);
+			System.out.println("Opened database successfully");
+			stat = dbConnection.createStatement();
+			String sql = "SELECT * FROM STOC;";
+
+			rs = stat.executeQuery(sql);
+
+			while (rs.next()) {
+
+				int id = Integer.parseInt(rs.getString("ID"));
+				list.add(id);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (stat != null) {
+				try {
+					stat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (dbConnection != null) {
+				try {
+					dbConnection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
 	}
 
 }

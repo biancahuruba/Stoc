@@ -9,6 +9,12 @@ public class DistributieMagazinModel {
 	private Attribute localitate;
 	private Attribute cantitate;
 
+	public DistributieMagazinModel() {
+		magazin = new Attribute();
+		localitate = new Attribute();
+		cantitate = new Attribute();
+	}
+
 	public Attribute getMagazin() {
 		return magazin;
 	}
@@ -45,21 +51,24 @@ public class DistributieMagazinModel {
 		return null;
 	}
 
-	public void setAttribute(Attribute value, int index) {
+	public void setAttribute(final String value, final int index) {
 		switch (index) {
 		case 0:
-			magazin = value;
+			magazin.setValue(value);
+			magazin.setChanged(true);
 			break;
 		case 1:
-			localitate = value;
+			localitate.setValue(value);
+			localitate.setChanged(true);
 			break;
 		case 2:
-			cantitate = value;
+			cantitate.setValue(value);
+			cantitate.setChanged(true);
 			break;
-		}
+		default:
+			break;
 
+		}
 	}
-	
-	
 
 }

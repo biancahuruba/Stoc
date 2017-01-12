@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exemplu.common.models.Attribute;
+import exemplu.common.models.RowMeta;
 
 public class StocModel {
 
@@ -14,30 +15,48 @@ public class StocModel {
 	private Attribute aprobat;
 	private Attribute data;
 
-	private List<DistributieMagazinModel> list;
+	private List<DistributieMagazinModel> tableList;
+	private RowMeta rowMeta;
 
 	public StocModel() {
-		list = new ArrayList<>();
+		initFields();
+		tableList = new ArrayList<>();
+		rowMeta = new RowMeta();
+	}
+
+	private void initFields() {
+		produs = new Attribute();
+		categorie = new Attribute();
+		pret = new Attribute();
+		cod = new Attribute();
 	}
 
 	public void addRow(DistributieMagazinModel model, int index) {
-		list.add(index, model);
+		tableList.add(index, model);
 	}
 
 	public void removeRow(int index) {
-		list.remove(index);
+		tableList.remove(index);
+	}
+
+	public List<DistributieMagazinModel> getTableList() {
+		return tableList;
+	}
+
+	public void setTableList(List<DistributieMagazinModel> tableList) {
+		this.tableList = tableList;
 	}
 
 	public Attribute getValue(int row, int column) {
-		return list.get(row).getAttribute(column);
+		return tableList.get(row).getAttribute(column);
 	}
 
-	public void setValue(Attribute value, int row, int column) {
-		list.get(row).setAttribute(value, column);
+	public void setValue(String value, int row, int column) {
+		tableList.get(row).setAttribute(value, column);
 	}
 
 	public int getRowCount() {
-		return list.size();
+		return tableList.size();
 	}
 
 	public int getColumnCount() {
@@ -92,4 +111,27 @@ public class StocModel {
 		this.data = data;
 	}
 
+	public RowMeta getRowMeta() {
+		return rowMeta;
+	}
+
+	public void setRowMeta(RowMeta rowMeta) {
+		this.rowMeta = rowMeta;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("Produs: " + produs.getValue() + "\n");
+		builder.append("Categorie: " + categorie.getValue() + "\n");
+		builder.append("Pret: " + pret.getValue() + "\n");
+		builder.append("Cod: " + cod.getValue() + "\n");
+		builder.append("Tabel: \n");
+		for (DistributieMagazinModel row : tableList) {
+			builder.append("  Magazin: " + row.getMagazin() + "\n");
+			builder.append("  Localitate: " + row.getLocalitate() + "\n");
+			builder.append("  Cantitate: " + row.getCantitate() + "\n");
+		}
+		return builder.toString();
+	}
 }

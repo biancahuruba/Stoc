@@ -6,11 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -21,11 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
 import exemplu.common.models.MyTableModel;
@@ -57,84 +51,29 @@ public class StocView extends JPanel {
 	/** choose date. */
 	private javafx.scene.control.DatePicker datePicker;
 
-	private static final File file = new File("RowTable.txt");
-
-	private TextFieldModel textModel;
-
 	private ActionListener listenerAction;
 
-	private TableModelListener listenerTable;
-
-	private JButton button;
-
-	public TableModelListener getListenerTable() {
-		return listenerTable;
-	}
-
-	public void setListenerTable(TableModelListener newListener) {
-		table.getModel().removeTableModelListener(listenerTable);
-		this.listenerTable = newListener;
-		table.getModel().removeTableModelListener(newListener);
-		table.getModel().addTableModelListener(listenerTable);
-	}
-
-	public void display(TableModelEvent e) {
-		table.getValueAt(e.getFirstRow(), e.getColumn());
-		System.out.println(table.getValueAt(e.getFirstRow(), e.getColumn()));
-		System.out.println(e.getType() + " " + e.getColumn() + " " + e.getFirstRow());
-	}
-
-	public ActionListener getListener() {
-		return listenerAction;
-	}
-
-	public void setListener(ActionListener newListener) {
-		checkBoxAprobat.removeActionListener(listenerAction);
-		checkBoxAprobat.addActionListener(newListener);
-
-		button.removeActionListener(listenerAction);
-		button.addActionListener(newListener);
-
-		this.listenerAction = newListener;
-	}
+	public static final String FIELD_PRODUS = "Produs";
+	public static final String FIELD_KEY = "FieldName";
+	public static final String FIELD_CATEGORIE = "Categorie";
+	public static final String FIELD_PRET = "Pret";
+	public static final String FIELD_COD = "Cod";
+	public static final String FIELD_DATA = "Data";
 
 	/**
 	 * constructor.
 	 */
-	public StocView() {
+	public StocView(final DocumentListener documentListener, final ActionListener actionListener,
+			final TableModelListener listenerTable) {
 		super();
 		initContainer();
 		initTitle();
-		initFields();
-		initTable();
-		initButton();
-	}
-
-	private void initButton() {
-		button = new JButton("Salvare");
-		final GridBagConstraints ctbutton = new GridBagConstraints();
-
-		ctbutton.anchor = GridBagConstraints.EAST;
-		ctbutton.gridwidth = GridBagConstraints.REMAINDER;
-		ctbutton.insets = INSETS;
-
-		add(button, ctbutton);
-	}
-
-	private void initTable() {
+		initFields(documentListener);
+		initTable(listenerTable);
+		initButtons(actionListener);
 		final JLabel labelTitleTable = new JLabel("Distributie Magazine");
 
 		add(labelTitleTable, constrains(0, 5));
-
-		final GridBagConstraints ctTabel = initializeTable();
-		ctTabel.gridx = 0;
-		ctTabel.gridy = 10;
-		ctTabel.insets = INSETS;
-		ctTabel.gridwidth = GridBagConstraints.REMAINDER;
-		ctTabel.weightx = 1;
-		ctTabel.weighty = 1;
-		ctTabel.fill = GridBagConstraints.BOTH;
-		add(new JScrollPane(table), ctTabel);
 	}
 
 	private void initContainer() {
@@ -155,12 +94,12 @@ public class StocView extends JPanel {
 		add(labelTitle, ctTitle);
 	}
 
-	private void initFields() {
-		initFirstColumn();
+	private void initFields(final DocumentListener documentListener) {
+		initFirstColumn(documentListener);
 		initSecondColumne();
 	}
 
-	private void initFirstColumn() {
+	private void initFirstColumn(final DocumentListener documentListener) {
 		final JLabel labelProdus = new JLabel("Produs");
 		final JLabel labelCategorie = new JLabel("Categorie");
 		final JLabel labelPret = new JLabel("Pret");
@@ -172,22 +111,23 @@ public class StocView extends JPanel {
 		textFieldCod = new JTextField(15);
 
 		add(labelProdus, constrains(0, 1));
-
-		final GridBagConstraints ctTextProdus = new GridBagConstraints();
-		constrains(1, 1);
-		add(textFieldProdus, ctTextProdus);
-
 		add(labelCategorie, constrains(0, 2));
-
-		add(textFieldCategor, constrains(1, 2));
-
 		add(labelPret, constrains(0, 3));
-
-		add(textFieldPret, constrains(1, 3));
-
 		add(labelCod, constrains(0, 4));
+		
+		textFieldProdus.getDocument().putProperty(FIELD_KEY, FIELD_PRODUS);
+		textFieldCategor.getDocument().putProperty(FIELD_KEY, FIELD_CATEGORIE);
+		textFieldPret.getDocument().putProperty(FIELD_KEY, FIELD_PRET);
+		textFieldCod.getDocument().putProperty(FIELD_KEY, FIELD_COD);
 
+		add(textFieldProdus, constrains(1, 1));
+		add(textFieldCategor, constrains(1, 2));
+		add(textFieldPret, constrains(1, 3));
 		add(textFieldCod, constrains(1, 4));
+		textFieldProdus.getDocument().addDocumentListener(documentListener);
+		textFieldCategor.getDocument().addDocumentListener(documentListener);
+		textFieldPret.getDocument().addDocumentListener(documentListener);
+		textFieldCod.getDocument().addDocumentListener(documentListener);
 
 	}
 
@@ -196,6 +136,8 @@ public class StocView extends JPanel {
 		final JLabel labelAprobat = new JLabel("Aprobat");
 
 		add(labelData, constrains(2, 1, INSET_SPACE));
+		add(labelAprobat, constrains(2, 2, INSET_SPACE));
+
 		JFXPanel panel = new JFXPanel();
 		Platform.setImplicitExit(false);
 		Platform.runLater(new Runnable() {
@@ -204,10 +146,8 @@ public class StocView extends JPanel {
 				initFX(panel);
 			}
 		});
-		
-		add(panel, constrains(3, 1));
 
-		add(labelAprobat, constrains(2, 2, INSET_SPACE));
+		add(panel, constrains(3, 1));
 
 		checkBoxAprobat = new JCheckBox();
 		checkBoxAprobat.setActionCommand(Commands.ENABLE.toString());
@@ -233,7 +173,27 @@ public class StocView extends JPanel {
 		return (scene);
 	}
 
-	private GridBagConstraints initializeTable() {
+	public void setAprobat() {
+		textFieldPret.setEnabled(!textFieldPret.isEnabled());
+	}
+
+	private void initTable(final TableModelListener listenerTable) {
+		final JLabel labelTitleTable = new JLabel("Distributie Magazine");
+
+		add(labelTitleTable, constrains(0, 5));
+
+		final GridBagConstraints ctTabel = initializeTable(listenerTable);
+		ctTabel.gridx = 0;
+		ctTabel.gridy = 10;
+		ctTabel.insets = INSETS;
+		ctTabel.gridwidth = GridBagConstraints.REMAINDER;
+		ctTabel.weightx = 1;
+		ctTabel.weighty = 1;
+		ctTabel.fill = GridBagConstraints.BOTH;
+		add(new JScrollPane(table), ctTabel);
+	}
+
+	private GridBagConstraints initializeTable(final TableModelListener listenerTable) {
 		table = new JTable();
 
 		final JComboBox<String> comboBox = new JComboBox<>();
@@ -253,12 +213,9 @@ public class StocView extends JPanel {
 		addRow();
 		final TableColumn localitateColumn = colModel.getColumn(1);
 		localitateColumn.setCellEditor(new DefaultCellEditor(comboBox));
+		table.getModel().addTableModelListener(listenerTable);
 
 		return new GridBagConstraints();
-	}
-
-	public void addRow() {
-		((MyTableModel) table.getModel()).addNewRow();
 	}
 
 	private DefaultTableColumnModel getColModel() {
@@ -275,47 +232,43 @@ public class StocView extends JPanel {
 		colModel.addColumn(aColumn);
 	}
 
-	public void setAprobat() {
-		textFieldPret.setEnabled(!textFieldPret.isEnabled());
+	public void addRow() {
+		((MyTableModel) table.getModel()).addNewRow();
 	}
 
-	public void SaveDataFromTable() {
-		int row = readRowNumber(file);
-		for (int column = 0; column < table.getColumnCount(); column++) {
-			table.getModel().setValueAt(table.getValueAt(row - 1, column), row - 1, column);
+	public void stopEditing() {
+		final TableCellEditor editor = table.getCellEditor();
+		if (editor != null) {
+			editor.stopCellEditing();
 		}
-		row++;
-		saveRowNumeber(row, file);
-
 	}
 
-	public void documentListener() {
-		textFieldCategor.getDocument().addDocumentListener(new DocumentListener() {
+	private void initButtons(final ActionListener actionListener) {
+		final JButton buttonSalvare = new JButton("Salvare");
+		final JButton buttonEditare = new JButton("Editare");
+		final JButton buttonStergere = new JButton("Stergere");
 
-			public void insertUpdate(DocumentEvent e) {
-				System.out.println("Insert");
-			}
+		buttonEditare.addActionListener(actionListener);
+		buttonSalvare.addActionListener(actionListener);
+		buttonStergere.addActionListener(actionListener);
 
-			public void removeUpdate(DocumentEvent e) {
-				System.out.println("Remove");
-			}
-
-			public void changedUpdate(DocumentEvent e) {
-				System.out.println("Change");
-			}
-		});
+		add(buttonSalvare, buttonConstrains());
+		add(buttonEditare, buttonConstrainsEast());
+		add(buttonStergere, buttonConstrainsEast());
 	}
 
-	public void SaveDataFromFields() {
-		String[] list = new String[4];
-		list[0] = textFieldProdus.getText();
-		list[1] = textFieldCategor.getText();
-		list[2] = textFieldPret.getText();
-		list[3] = textFieldCod.getText();
+	private GridBagConstraints buttonConstrains() {
+		GridBagConstraints ctbutton = new GridBagConstraints();
+		ctbutton.anchor = GridBagConstraints.WEST;
+		ctbutton.insets = INSETS;
+		return ctbutton;
+	}
 
-		textModel = new TextFieldModel();
-		textModel.add(list);
-
+	private GridBagConstraints buttonConstrainsEast() {
+		GridBagConstraints ctbutton = new GridBagConstraints();
+		ctbutton.anchor = GridBagConstraints.EAST;
+		ctbutton.insets = INSETS;
+		return ctbutton;
 	}
 
 	private GridBagConstraints constrains(int x, int y) {
@@ -336,51 +289,54 @@ public class StocView extends JPanel {
 		return object;
 
 	}
-
-	private GridBagConstraints constrains(int x, int y, Insets insets, int grid) {
-		GridBagConstraints object = new GridBagConstraints();
-		object.gridx = x;
-		object.gridy = y;
-		object.anchor = grid;
-		object.insets = insets;
-		return object;
+	
+	public String getFieldValue(final String fieldName){
+		switch (fieldName) {
+		case FIELD_PRODUS:
+			return textFieldProdus.getText();
+			
+		case FIELD_CATEGORIE:
+			return textFieldCategor.getText();
+			
+		case FIELD_PRET:
+			return textFieldPret.getText();
+			
+		case FIELD_COD:
+			return textFieldCod.getText();
+		default:
+			return null;
+		}
+	}
+	
+	public void setFieldValue(final String fieldName, final String value){
+		switch (fieldName) {
+		case FIELD_PRODUS:
+			textFieldProdus.setText(value);
+			break;
+		case FIELD_CATEGORIE:
+			textFieldCategor.setText(value);
+			break;
+			
+		case FIELD_PRET:
+			textFieldPret.setText(value);
+			break;
+			
+		case FIELD_COD:
+			textFieldCod.setText(value);
+			break;
+		default:
+			break;
+		}
 	}
 
-	private void saveRowNumeber(int row, File file) {
-		FileWriter fileWriter;
-		try {
-			PrintWriter writ = new PrintWriter(file);
-			writ.print("");
-			writ.close();
-
-			fileWriter = new FileWriter(file);
-			fileWriter.write("" + row);
-			fileWriter.flush();
-			fileWriter.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+	public ActionListener getListener() {
+		return listenerAction;
 	}
 
-	private int readRowNumber(File file) {
+	public void setListener(ActionListener newListener) {
+		checkBoxAprobat.removeActionListener(listenerAction);
+		checkBoxAprobat.addActionListener(newListener);
 
-		FileReader fileReader;
-		try {
-			fileReader = new FileReader(file);
-			StringBuffer stringBuffer = new StringBuffer();
-			int numCharsRead;
-			char[] charArray = new char[1024];
-			while ((numCharsRead = fileReader.read(charArray)) > 0) {
-				stringBuffer.append(charArray, 0, numCharsRead);
-			}
-			fileReader.close();
-			return Integer.parseInt(stringBuffer.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return 0;
-
+		this.listenerAction = newListener;
 	}
 }

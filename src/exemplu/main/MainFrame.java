@@ -14,7 +14,7 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setSize(new Dimension(800, 600));
+		setSize(new Dimension(800, 700));
 		setIconImage(getApplicationIcon());
 		setTitle(APP_TITLE);
 	}
