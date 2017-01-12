@@ -51,8 +51,6 @@ public class StocView extends JPanel {
 	/** choose date. */
 	private javafx.scene.control.DatePicker datePicker;
 
-	private ActionListener listenerAction;
-
 	public static final String FIELD_PRODUS = "Produs";
 	public static final String FIELD_KEY = "FieldName";
 	public static final String FIELD_CATEGORIE = "Categorie";
@@ -68,7 +66,7 @@ public class StocView extends JPanel {
 		super();
 		initContainer();
 		initTitle();
-		initFields(documentListener);
+		initFields(documentListener, actionListener);
 		initTable(listenerTable);
 		initButtons(actionListener);
 		final JLabel labelTitleTable = new JLabel("Distributie Magazine");
@@ -94,9 +92,9 @@ public class StocView extends JPanel {
 		add(labelTitle, ctTitle);
 	}
 
-	private void initFields(final DocumentListener documentListener) {
+	private void initFields(final DocumentListener documentListener,final ActionListener actionListener) {
 		initFirstColumn(documentListener);
-		initSecondColumne();
+		initSecondColumne(actionListener);
 	}
 
 	private void initFirstColumn(final DocumentListener documentListener) {
@@ -131,7 +129,7 @@ public class StocView extends JPanel {
 
 	}
 
-	private void initSecondColumne() {
+	private void initSecondColumne(final ActionListener actionListener) {
 		final JLabel labelData = new JLabel("Data");
 		final JLabel labelAprobat = new JLabel("Aprobat");
 
@@ -152,6 +150,7 @@ public class StocView extends JPanel {
 		checkBoxAprobat = new JCheckBox();
 		checkBoxAprobat.setActionCommand(Commands.ENABLE.toString());
 		add(checkBoxAprobat, constrains(3, 2));
+		checkBoxAprobat.addActionListener(actionListener);
 	}
 
 	private void initFX(JFXPanel fxPanel) {
@@ -329,14 +328,14 @@ public class StocView extends JPanel {
 		}
 	}
 
-	public ActionListener getListener() {
-		return listenerAction;
-	}
-
-	public void setListener(ActionListener newListener) {
-		checkBoxAprobat.removeActionListener(listenerAction);
-		checkBoxAprobat.addActionListener(newListener);
-
-		this.listenerAction = newListener;
-	}
+//	public ActionListener getListener() {
+//		return listenerAction;
+//	}
+//
+//	public void setListener(ActionListener newListener) {
+//		checkBoxAprobat.removeActionListener(listenerAction);
+//		checkBoxAprobat.addActionListener(newListener);
+//
+//		this.listenerAction = newListener;
+//	}
 }

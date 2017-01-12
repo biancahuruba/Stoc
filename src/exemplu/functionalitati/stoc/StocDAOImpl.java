@@ -24,10 +24,10 @@ public class StocDAOImpl implements StocDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
-			String sql = "INSERT INTO STOC(COD,PRODUS,CATEGORIE,PRET,DATA, MAGAZIN, LOCALITATE, CANTITATE) VALUES('"
-					+ stoc.getCod().getValue() + "'," + "'" + stoc.getProdus().getValue() + "'" + "," + "'"
-					+ stoc.getCategorie().getValue() + "'" + "," + "'" + stoc.getPret().getValue() + "'" + ",'"
-					+ stoc.getData().getValue() + "'," + stoc.getTableList().get(0).getAttribute(0).getValue() + "'"
+			String sql = "INSERT INTO STOC (PRODUS,CATEGORIE,PRET,COD,DATA, MAGAZIN, LOCALITATE, CANTITATE) VALUES('"
+					+ stoc.getProdus().getValue() + "'" + "," + "'" + stoc.getCategorie().getValue() + "'" + "," + "'"
+					+ stoc.getPret().getValue() + "'" + ",'" + stoc.getCod().getValue() + "','"
+					+ "data" + "','" + stoc.getTableList().get(0).getAttribute(0).getValue() + "'"
 					+ "," + "'" + stoc.getTableList().get(0).getAttribute(1).getValue() + "'" + ",'"
 					+ stoc.getTableList().get(0).getAttribute(2).getValue() + "'" + ");";
 			stat.executeUpdate(sql);
@@ -204,7 +204,7 @@ public class StocDAOImpl implements StocDAO {
 			stat.executeUpdate(sql);
 			dbConnection.commit();
 
-			System.out.println("Record is deleted from Stoc.  " );
+			System.out.println("Record is deleted from Stoc.  ");
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -227,7 +227,7 @@ public class StocDAOImpl implements StocDAO {
 			}
 		}
 	}
-	
+
 	public List<Integer> listOfId() {
 		Connection dbConnection = null;
 		Statement stat = null;

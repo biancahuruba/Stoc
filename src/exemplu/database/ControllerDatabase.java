@@ -4,15 +4,60 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import exemplu.common.models.Attribute;
+import exemplu.functionalitati.stoc.DistributieMagazinModel;
+import exemplu.functionalitati.stoc.StocDAOImpl;
+import exemplu.functionalitati.stoc.StocModel;
 
 public class ControllerDatabase {
 	private static final String DATABASE_LOCATION = "jdbc:sqlite:Stoc/resources/database/test.db";
 
 	public static void main(String args[]) {
-		createTables();
+		// createTables();
 		// insertData();
 		// readData();
+		StocDAOImpl dao = new StocDAOImpl();
+		StocModel stoc= new StocModel();
 
+		Attribute produs = new Attribute();
+		Attribute categorie = new Attribute();
+		Attribute pret = new Attribute();
+		Attribute cod = new Attribute();
+
+		List<DistributieMagazinModel> tableList = new ArrayList<DistributieMagazinModel>();
+		DistributieMagazinModel distributie= new DistributieMagazinModel();
+		
+		Attribute magazin = new Attribute();
+		Attribute localitate = new Attribute();
+		Attribute cantitate = new Attribute();
+		
+		produs.setValue("apa");
+		categorie.setValue("apa 1");
+		pret.setValue("2");
+		cod.setValue("10jjsb");
+		
+		magazin.setValue("abc");
+		localitate.setValue("Rosiori");
+		cantitate.setValue("10");
+		
+		distributie.setMagazin(magazin);
+		distributie.setLocalitate(localitate);
+		distributie.setCantitate(cantitate);
+		
+		tableList.add(distributie);
+		
+		stoc.setCategorie(categorie);
+		stoc.setCod(cod);
+		stoc.setPret(pret);
+		stoc.setProdus(produs);
+		stoc.setTableList(tableList);
+		
+		dao.insertData(stoc);
+		
+		
 	}
 
 	public static void createTables() {
