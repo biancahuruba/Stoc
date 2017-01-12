@@ -10,6 +10,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+
 import exemplu.common.interfaces.ControllerInterface;
 import exemplu.common.models.Attribute;
 
@@ -22,7 +23,9 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 	public StocController() {
 		view = new StocView(this, this, this);
 		model = new StocModel();
+
 	}
+
 
 	@Override
 	public JPanel getView() {
@@ -47,14 +50,15 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 			view.setAprobat();
 		}
 		if (event.getActionCommand().equals("Salvare")) {
-			view.stopEditing();
-			dao.insertData(model);
+			// view.stopEditing();
+			// dao.insertData(model);
 			System.out.println(model.toString());
 			System.err.println("Inserted into db.");
 		}
 		if (event.getActionCommand().equals("Editare")) {
 			int size = dao.listOfId().size();
 			int id = dao.listOfId().get(size - 1);
+			
 			if (model.getProdus().isChanged()) {
 				dao.editData("produs", model.getProdus().getValue(), id);
 			}
@@ -147,7 +151,5 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 
 	@Override
 	public void tableChanged(TableModelEvent e) {
-		System.out.println(e.getType());
-
 	}
 }

@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
+import exemplu.common.models.GenericTableModel;
 import exemplu.common.models.MyTableModel;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -69,6 +70,7 @@ public class StocView extends JPanel {
 		initFields(documentListener, actionListener);
 		initTable(listenerTable);
 		initButtons(actionListener);
+		
 		final JLabel labelTitleTable = new JLabel("Distributie Magazine");
 
 		add(labelTitleTable, constrains(0, 5));
@@ -234,6 +236,10 @@ public class StocView extends JPanel {
 	public void addRow() {
 		((MyTableModel) table.getModel()).addNewRow();
 	}
+	
+	public void setTableModel(final GenericTableModel<?> model) {
+		table.setModel(model);
+	}
 
 	public void stopEditing() {
 		final TableCellEditor editor = table.getCellEditor();
@@ -255,6 +261,7 @@ public class StocView extends JPanel {
 		add(buttonEditare, buttonConstrainsEast());
 		add(buttonStergere, buttonConstrainsEast());
 	}
+
 
 	private GridBagConstraints buttonConstrains() {
 		GridBagConstraints ctbutton = new GridBagConstraints();
