@@ -21,12 +21,13 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 
 	private StocView view;
 	private StocModel model;
-	private StocDAOImpl dao = new StocDAOImpl();
-
+	private StocDAOImpl dao;
+	
 	public StocController() {
 		view = new StocView(this, this);
 		model = new StocModel();
-		
+		dao = new StocDAOImpl();
+
 		setMockData();
 		
 	}
@@ -80,8 +81,8 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 		}
 		if (event.getActionCommand().equals("Salvare")) {
 			 view.stopEditing();
-			 //dao.insertData(model);
-			System.out.println(model.toString());
+			 dao.insertData(model);
+			//System.out.println(model.toString());
 			System.err.println("Inserted into db.");
 		}
 		if (event.getActionCommand().equals("Editare")) {
