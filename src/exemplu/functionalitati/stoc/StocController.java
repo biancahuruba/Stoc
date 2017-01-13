@@ -5,10 +5,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.*;
 
 import exemplu.common.interfaces.ControllerInterface;
 import exemplu.common.models.Attribute;
@@ -42,9 +44,15 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 		columnNames.add("Cantitate");
 		metadata.setColumnNames(columnNames);
 		
-		
-
 		view.setTableModel(new GenericTableModel<>(tabelModel, metadata));
+		final JComboBox<String> comboBox = new JComboBox<>();
+		final String choices[] = { "Arad", "Almas", "Fantanele", "Hunedoara", "Luna", "Negreni", "Rosiori", "Tasnad",
+				"Zegujani" };
+		for (int i = 0; i < choices.length; i++) {
+			comboBox.addItem(choices[i]);
+		}
+		TableColumn col=view.getTable().getColumnModel().getColumn(1);
+		col.setCellEditor(new DefaultCellEditor(comboBox));
 	}
 	
 
@@ -72,8 +80,8 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 		}
 		if (event.getActionCommand().equals("Salvare")) {
 			 view.stopEditing();
-			 dao.insertData(model);
-			//System.out.println(model.toString());
+			 //dao.insertData(model);
+			System.out.println(model.toString());
 			System.err.println("Inserted into db.");
 		}
 		if (event.getActionCommand().equals("Editare")) {

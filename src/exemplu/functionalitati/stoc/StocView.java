@@ -61,7 +61,6 @@ public class StocView extends JPanel {
 		initContainer();
 		initTitle();
 		initFields(documentListener, actionListener);
-		
 
 		table = new JTable();
 		final GridBagConstraints ctTabel = new GridBagConstraints();
@@ -72,7 +71,6 @@ public class StocView extends JPanel {
 		ctTabel.weightx = 1;
 		ctTabel.weighty = 1;
 		ctTabel.fill = GridBagConstraints.BOTH;
-		
 
 		add(new JScrollPane(table), ctTabel);
 
@@ -81,8 +79,8 @@ public class StocView extends JPanel {
 		add(labelTitleTable, constrains(0, 5));
 		initButtons(actionListener);
 	}
-	
-	
+
+
 
 	private void initContainer() {
 		setLayout(new GridBagLayout());
@@ -186,8 +184,6 @@ public class StocView extends JPanel {
 		textFieldPret.setEnabled(!textFieldPret.isEnabled());
 	}
 
-
-
 	public void setTableModel(final GenericTableModel<?> model) {
 		table.setModel(model);
 	}
@@ -259,9 +255,9 @@ public class StocView extends JPanel {
 
 		case FIELD_COD:
 			return textFieldCod.getText();
-			
+
 		case FIELD_DATA:
-			return datePicker.getAccessibleText();
+			return String.valueOf((datePicker.getValue()));
 		default:
 			return null;
 		}
@@ -283,7 +279,7 @@ public class StocView extends JPanel {
 		case FIELD_COD:
 			textFieldCod.setText(value);
 			break;
-			
+
 		case FIELD_DATA:
 			datePicker.setAccessibleText(value);
 			break;
@@ -299,7 +295,5 @@ public class StocView extends JPanel {
 	public void setTable(JTable table) {
 		this.table = table;
 	}
-	
-	
 
 }
