@@ -50,8 +50,8 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 
 		if (event.getActionCommand().equals("Salvare")) {
 			view.stopEditing();
-			System.out.println(model.toString());
-			//dao.insertData(model);
+			//System.out.println(model.toString());
+			dao.insertData(model);
 			System.err.println("Inserted into db.");
 		}
 		if (event.getActionCommand().equals("Editare")) {

@@ -78,8 +78,8 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 		}
 		if (event.getActionCommand().equals("Salvare")) {
 			 view.stopEditing();
-			// dao.insertData(model);
-			System.out.println(model.toString());
+			 dao.insertData(model);
+			//System.out.println(model.toString());
 			System.err.println("Inserted into db.");
 		}
 		if (event.getActionCommand().equals("Editare")) {

@@ -154,7 +154,7 @@ public class StocDAOImpl implements StocDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
-			String sql = "UPDATE STOC SET" + columnName + " ='" + columnValue + "' WHERE ID=" + id + ";";
+			String sql = "UPDATE STOC SET " + columnName + " ='" + columnValue + "' WHERE ID=" + id + ";";
 
 			stat.executeUpdate(sql);
 			dbConnection.commit();
