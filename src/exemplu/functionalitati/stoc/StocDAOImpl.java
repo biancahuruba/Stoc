@@ -28,7 +28,7 @@ public class StocDAOImpl implements StocDAO {
 			String sql = "INSERT INTO STOC (PRODUS,CATEGORIE,PRET,COD,DATA, MAGAZIN, LOCALITATE, CANTITATE) VALUES('"
 					+ stoc.getProdus().getValue() + "'" + "," + "'" + stoc.getCategorie().getValue() + "'" + "," + "'"
 					+ stoc.getPret().getValue() + "'" + ",'" + stoc.getCod().getValue() + "','"
-					+ "data" + "','" + stoc.getTableList().get(0).getAttribute(0).getValue() + "'"
+					+ stoc.getData().getValue() + "','" + stoc.getTableList().get(0).getAttribute(0).getValue() + "'"
 					+ "," + "'" + stoc.getTableList().get(0).getAttribute(1).getValue() + "'" + ",'"
 					+ stoc.getTableList().get(0).getAttribute(2).getValue() + "'" + ");";
 			stat.executeUpdate(sql);
