@@ -1,8 +1,9 @@
 package exemplu.functionalitati.stoc;
 
 import exemplu.common.models.Attribute;
+import exemplu.common.models.GenericRowModel;
 
-public class DistributieMagazinModel {
+public class DistributieMagazinModel extends GenericRowModel {
 
 	public static final int COLUMN_COUNT = 3;
 	private Attribute magazin;
@@ -51,7 +52,7 @@ public class DistributieMagazinModel {
 		return null;
 	}
 
-	public void setAttribute(final String value, final int index) {
+	public void setAttribute(final int index,final String value ) {
 		switch (index) {
 		case 0:
 			magazin.setValue(value);

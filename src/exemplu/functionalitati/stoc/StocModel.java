@@ -52,7 +52,7 @@ public class StocModel {
 	}
 
 	public void setValue(String value, int row, int column) {
-		tableList.get(row).setAttribute(value, column);
+		tableList.get(row).setAttribute( column,value);
 	}
 
 	public int getRowCount() {

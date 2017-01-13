@@ -2,30 +2,58 @@ package exemplu.functionalitati.stoc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumn;
 
 import exemplu.common.interfaces.ControllerInterface;
 import exemplu.common.models.Attribute;
+import exemplu.common.models.GenericTableModel;
+import exemplu.common.models.MyTableModel;
+import exemplu.common.models.RowMeta;
 
-public class StocController implements ControllerInterface, ActionListener, DocumentListener, TableModelListener {
+public class StocController implements ControllerInterface, ActionListener, DocumentListener {
 
 	private StocView view;
 	private StocModel model;
 	private StocDAOImpl dao = new StocDAOImpl();
 
 	public StocController() {
-		view = new StocView(this, this, this);
+		view = new StocView(this, this);
 		model = new StocModel();
+		
+		setMockData();
+		
+	}
+	
+	public void setMockData(){
+
+		final List<DistributieMagazinModel> tabelModel = model.getTableList();
+		final DistributieMagazinModel row = new DistributieMagazinModel();
+		tabelModel.add(row);
+		final RowMeta metadata = model.getRowMeta();
+		
+		final List<String> columnNames = new ArrayList<>();
+		columnNames.add("Magazin");
+		columnNames.add("Localitate");
+		columnNames.add("Cantitate");
+		metadata.setColumnNames(columnNames);
+		
+		
+
+		view.setTableModel(new GenericTableModel<>(tabelModel, metadata));
 
 	}
-
+	
 
 	@Override
 	public JPanel getView() {
@@ -50,7 +78,7 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 			view.setAprobat();
 		}
 		if (event.getActionCommand().equals("Salvare")) {
-			// view.stopEditing();
+			 view.stopEditing();
 			// dao.insertData(model);
 			System.out.println(model.toString());
 			System.err.println("Inserted into db.");
@@ -58,7 +86,7 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 		if (event.getActionCommand().equals("Editare")) {
 			int size = dao.listOfId().size();
 			int id = dao.listOfId().get(size - 1);
-			
+
 			if (model.getProdus().isChanged()) {
 				dao.editData("produs", model.getProdus().getValue(), id);
 			}
@@ -149,7 +177,4 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 		}
 	}
 
-	@Override
-	public void tableChanged(TableModelEvent e) {
-	}
 }

@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
+import exemplu.common.models.GenericRowModel;
 import exemplu.common.models.GenericTableModel;
 import exemplu.common.models.MyTableModel;
 import javafx.application.Platform;
@@ -62,18 +63,30 @@ public class StocView extends JPanel {
 	/**
 	 * constructor.
 	 */
-	public StocView(final DocumentListener documentListener, final ActionListener actionListener,
-			final TableModelListener listenerTable) {
+	public StocView(final DocumentListener documentListener, final ActionListener actionListener) {
 		super();
 		initContainer();
 		initTitle();
 		initFields(documentListener, actionListener);
-		initTable(listenerTable);
-		initButtons(actionListener);
 		
+
+		table = new JTable();
+		final GridBagConstraints ctTabel = new GridBagConstraints();
+		ctTabel.gridx = 0;
+		ctTabel.gridy = 10;
+		ctTabel.insets = INSETS;
+		ctTabel.gridwidth = GridBagConstraints.REMAINDER;
+		ctTabel.weightx = 1;
+		ctTabel.weighty = 1;
+		ctTabel.fill = GridBagConstraints.BOTH;
+		
+
+		add(new JScrollPane(table), ctTabel);
+
 		final JLabel labelTitleTable = new JLabel("Distributie Magazine");
 
 		add(labelTitleTable, constrains(0, 5));
+		initButtons(actionListener);
 	}
 
 	private void initContainer() {
@@ -94,7 +107,7 @@ public class StocView extends JPanel {
 		add(labelTitle, ctTitle);
 	}
 
-	private void initFields(final DocumentListener documentListener,final ActionListener actionListener) {
+	private void initFields(final DocumentListener documentListener, final ActionListener actionListener) {
 		initFirstColumn(documentListener);
 		initSecondColumne(actionListener);
 	}
@@ -114,7 +127,7 @@ public class StocView extends JPanel {
 		add(labelCategorie, constrains(0, 2));
 		add(labelPret, constrains(0, 3));
 		add(labelCod, constrains(0, 4));
-		
+
 		textFieldProdus.getDocument().putProperty(FIELD_KEY, FIELD_PRODUS);
 		textFieldCategor.getDocument().putProperty(FIELD_KEY, FIELD_CATEGORIE);
 		textFieldPret.getDocument().putProperty(FIELD_KEY, FIELD_PRET);
@@ -178,65 +191,8 @@ public class StocView extends JPanel {
 		textFieldPret.setEnabled(!textFieldPret.isEnabled());
 	}
 
-	private void initTable(final TableModelListener listenerTable) {
-		final JLabel labelTitleTable = new JLabel("Distributie Magazine");
 
-		add(labelTitleTable, constrains(0, 5));
 
-		final GridBagConstraints ctTabel = initializeTable(listenerTable);
-		ctTabel.gridx = 0;
-		ctTabel.gridy = 10;
-		ctTabel.insets = INSETS;
-		ctTabel.gridwidth = GridBagConstraints.REMAINDER;
-		ctTabel.weightx = 1;
-		ctTabel.weighty = 1;
-		ctTabel.fill = GridBagConstraints.BOTH;
-		add(new JScrollPane(table), ctTabel);
-	}
-
-	private GridBagConstraints initializeTable(final TableModelListener listenerTable) {
-		table = new JTable();
-
-		final JComboBox<String> comboBox = new JComboBox<>();
-		final String choices[] = { "Arad", "Almas", "Fantanele", "Hunedoara", "Luna", "Negreni", "Rosiori", "Tasnad",
-				"Zegujani" };
-		for (int i = 0; i < choices.length; i++) {
-			comboBox.addItem(choices[i]);
-		}
-		DefaultTableColumnModel colModel = getColModel();
-
-		MyTableModel model = new MyTableModel();
-		model.setColumnCount(colModel.getColumnCount());
-		table.setModel(model);
-
-		table.setColumnModel(colModel);
-		table.setCellSelectionEnabled(true);
-		addRow();
-		final TableColumn localitateColumn = colModel.getColumn(1);
-		localitateColumn.setCellEditor(new DefaultCellEditor(comboBox));
-		table.getModel().addTableModelListener(listenerTable);
-
-		return new GridBagConstraints();
-	}
-
-	private DefaultTableColumnModel getColModel() {
-		DefaultTableColumnModel colModel = new DefaultTableColumnModel();
-		addColumn(colModel, 0, "Magazin");
-		addColumn(colModel, 1, "Localitate");
-		addColumn(colModel, 2, "Cantitate");
-		return colModel;
-	}
-
-	private void addColumn(DefaultTableColumnModel colModel, int index, String name) {
-		TableColumn aColumn = new TableColumn(index);
-		aColumn.setHeaderValue(name);
-		colModel.addColumn(aColumn);
-	}
-
-	public void addRow() {
-		((MyTableModel) table.getModel()).addNewRow();
-	}
-	
 	public void setTableModel(final GenericTableModel<?> model) {
 		table.setModel(model);
 	}
@@ -262,9 +218,9 @@ public class StocView extends JPanel {
 		add(buttonStergere, buttonConstrainsEast());
 	}
 
-
 	private GridBagConstraints buttonConstrains() {
 		GridBagConstraints ctbutton = new GridBagConstraints();
+		//ctbutton.gridwidth = GridBagConstraints.REMAINDER;
 		ctbutton.anchor = GridBagConstraints.WEST;
 		ctbutton.insets = INSETS;
 		return ctbutton;
@@ -295,26 +251,26 @@ public class StocView extends JPanel {
 		return object;
 
 	}
-	
-	public String getFieldValue(final String fieldName){
+
+	public String getFieldValue(final String fieldName) {
 		switch (fieldName) {
 		case FIELD_PRODUS:
 			return textFieldProdus.getText();
-			
+
 		case FIELD_CATEGORIE:
 			return textFieldCategor.getText();
-			
+
 		case FIELD_PRET:
 			return textFieldPret.getText();
-			
+
 		case FIELD_COD:
 			return textFieldCod.getText();
 		default:
 			return null;
 		}
 	}
-	
-	public void setFieldValue(final String fieldName, final String value){
+
+	public void setFieldValue(final String fieldName, final String value) {
 		switch (fieldName) {
 		case FIELD_PRODUS:
 			textFieldProdus.setText(value);
@@ -322,11 +278,11 @@ public class StocView extends JPanel {
 		case FIELD_CATEGORIE:
 			textFieldCategor.setText(value);
 			break;
-			
+
 		case FIELD_PRET:
 			textFieldPret.setText(value);
 			break;
-			
+
 		case FIELD_COD:
 			textFieldCod.setText(value);
 			break;
@@ -335,14 +291,14 @@ public class StocView extends JPanel {
 		}
 	}
 
-//	public ActionListener getListener() {
-//		return listenerAction;
-//	}
-//
-//	public void setListener(ActionListener newListener) {
-//		checkBoxAprobat.removeActionListener(listenerAction);
-//		checkBoxAprobat.addActionListener(newListener);
-//
-//		this.listenerAction = newListener;
-//	}
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+	
+	
+
 }
