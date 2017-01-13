@@ -118,28 +118,28 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 		}
 	}
 
-	private String displayUpdateField() {
-		final StringBuilder builder = new StringBuilder();
-
-		if (model.getNume().isChanged()) {
-			builder.append("Nume: " + model.getNume().getValue() + "\n");
-		}
-
-		if (model.getPrenume().isChanged()) {
-			builder.append("Prenume: " + model.getPrenume().getValue() + "\n");
-		}
-
-		List<AngajatiRow> list = model.getTabeModel();
-		for (int i = 0; i < 4; i++) {
-			if (list.get(0).getAttribute(i).isChanged()) {
-				builder.append("Tabel: \n");
-				builder.append(attributeName(i) + ": " + list.get(0).getAttribute(i).getValue());
-			}
-		}
-		builder.append("\n");
-		return builder.toString();
-
-	}
+//	private String displayUpdateField() {
+//		final StringBuilder builder = new StringBuilder();
+//
+//		if (model.getNume().isChanged()) {
+//			builder.append("Nume: " + model.getNume().getValue() + "\n");
+//		}
+//
+//		if (model.getPrenume().isChanged()) {
+//			builder.append("Prenume: " + model.getPrenume().getValue() + "\n");
+//		}
+//
+//		List<AngajatiRow> list = model.getTabeModel();
+//		for (int i = 0; i < 4; i++) {
+//			if (list.get(0).getAttribute(i).isChanged()) {
+//				builder.append("Tabel: \n");
+//				builder.append(attributeName(i) + ": " + list.get(0).getAttribute(i).getValue());
+//			}
+//		}
+//		builder.append("\n");
+//		return builder.toString();
+//
+//	}
 
 	private String attributeName(int i) {
 		switch (i) {

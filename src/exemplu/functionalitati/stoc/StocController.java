@@ -5,20 +5,14 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
+
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableColumn;
 
 import exemplu.common.interfaces.ControllerInterface;
 import exemplu.common.models.Attribute;
 import exemplu.common.models.GenericTableModel;
-import exemplu.common.models.MyTableModel;
 import exemplu.common.models.RowMeta;
 
 public class StocController implements ControllerInterface, ActionListener, DocumentListener {

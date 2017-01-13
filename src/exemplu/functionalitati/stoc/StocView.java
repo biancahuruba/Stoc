@@ -7,24 +7,17 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
 
-import exemplu.common.models.GenericRowModel;
 import exemplu.common.models.GenericTableModel;
-import exemplu.common.models.MyTableModel;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
