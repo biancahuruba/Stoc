@@ -51,7 +51,6 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 		
 
 		view.setTableModel(new GenericTableModel<>(tabelModel, metadata));
-
 	}
 	
 

@@ -88,6 +88,8 @@ public class StocView extends JPanel {
 		add(labelTitleTable, constrains(0, 5));
 		initButtons(actionListener);
 	}
+	
+	
 
 	private void initContainer() {
 		setLayout(new GridBagLayout());
@@ -220,7 +222,6 @@ public class StocView extends JPanel {
 
 	private GridBagConstraints buttonConstrains() {
 		GridBagConstraints ctbutton = new GridBagConstraints();
-		//ctbutton.gridwidth = GridBagConstraints.REMAINDER;
 		ctbutton.anchor = GridBagConstraints.WEST;
 		ctbutton.insets = INSETS;
 		return ctbutton;
@@ -265,6 +266,9 @@ public class StocView extends JPanel {
 
 		case FIELD_COD:
 			return textFieldCod.getText();
+			
+		case FIELD_DATA:
+			return datePicker.getAccessibleText();
 		default:
 			return null;
 		}
@@ -285,6 +289,10 @@ public class StocView extends JPanel {
 
 		case FIELD_COD:
 			textFieldCod.setText(value);
+			break;
+			
+		case FIELD_DATA:
+			datePicker.setAccessibleText(value);
 			break;
 		default:
 			break;

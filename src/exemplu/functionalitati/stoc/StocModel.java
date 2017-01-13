@@ -126,6 +126,7 @@ public class StocModel {
 		builder.append("Categorie: " + categorie.getValue() + "\n");
 		builder.append("Pret: " + pret.getValue() + "\n");
 		builder.append("Cod: " + cod.getValue() + "\n");
+		//builder.append("Data: "+ data.getValue()+ "\n");
 		builder.append("Tabel: \n");
 		for (DistributieMagazinModel row : tableList) {
 			builder.append("  Magazin: " + row.getMagazin() + "\n");
