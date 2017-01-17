@@ -6,6 +6,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -19,6 +21,7 @@ import javax.swing.table.TableCellEditor;
 
 import exemplu.common.models.GenericTableModel;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
@@ -34,17 +37,25 @@ public class StocView extends JPanel {
 	/** table used to Distributie Magazine. */
 	private JTable table;
 	/** text field for Produs. */
-	private transient JTextField textFieldProdus;
+	private JTextField textFieldProdus;
 	/** text field for Categorie. */
-	private transient JTextField textFieldCategor;
+	private  JTextField textFieldCategor;
 	/** text field for Pret. */
-	private transient JTextField textFieldPret;
+	private  JTextField textFieldPret;
 	/** text field for Cod. */
-	private transient JTextField textFieldCod;
+	private  JTextField textFieldCod;
+	
+
+	
 	/** check Aprobat. */
-	private transient JCheckBox checkBoxAprobat;
+	private  JCheckBox checkBoxAprobat;
 	/** choose date. */
 	private javafx.scene.control.DatePicker datePicker;
+	
+	private  DocumentListener documentListener;
+	private  ActionListener actionListener;
+	private  ChangeListener<?> changeListener;
+	
 
 	public static final String FIELD_PRODUS = "Produs";
 	public static final String FIELD_KEY = "FieldName";
@@ -52,15 +63,21 @@ public class StocView extends JPanel {
 	public static final String FIELD_PRET = "Pret";
 	public static final String FIELD_COD = "Cod";
 	public static final String FIELD_DATA = "Data";
+	private JButton buttonSalvare;
+	private JButton buttonEditare;
+	private JButton buttonStergere;
 
+
+
+	
 	/**
 	 * constructor.
 	 */
-	public StocView(final DocumentListener documentListener, final ActionListener actionListener) {
+	public StocView() {
 		super();
 		initContainer();
 		initTitle();
-		initFields(documentListener, actionListener);
+		initFields();
 
 		table = new JTable();
 		final GridBagConstraints ctTabel = new GridBagConstraints();
@@ -77,9 +94,10 @@ public class StocView extends JPanel {
 		final JLabel labelTitleTable = new JLabel("Distributie Magazine");
 
 		add(labelTitleTable, constrains(0, 5));
-		initButtons(actionListener);
+		initButtons();
 	}
 
+	
 
 
 	private void initContainer() {
@@ -100,12 +118,14 @@ public class StocView extends JPanel {
 		add(labelTitle, ctTitle);
 	}
 
-	private void initFields(final DocumentListener documentListener, final ActionListener actionListener) {
-		initFirstColumn(documentListener);
-		initSecondColumne(actionListener);
+	private void initFields() {
+		initFirstColumn();
+		initSecondColumne();
 	}
+	
+	
 
-	private void initFirstColumn(final DocumentListener documentListener) {
+	private void initFirstColumn() {
 		final JLabel labelProdus = new JLabel("Produs");
 		final JLabel labelCategorie = new JLabel("Categorie");
 		final JLabel labelPret = new JLabel("Pret");
@@ -137,7 +157,7 @@ public class StocView extends JPanel {
 
 	}
 
-	private void initSecondColumne(final ActionListener actionListener) {
+	private void initSecondColumne() {
 		final JLabel labelData = new JLabel("Data");
 		final JLabel labelAprobat = new JLabel("Aprobat");
 
@@ -180,6 +200,8 @@ public class StocView extends JPanel {
 		return (scene);
 	}
 
+
+
 	public void setAprobat() {
 		textFieldPret.setEnabled(!textFieldPret.isEnabled());
 	}
@@ -195,19 +217,18 @@ public class StocView extends JPanel {
 		}
 	}
 
-	private void initButtons(final ActionListener actionListener) {
-		final JButton buttonSalvare = new JButton("Salvare");
-		final JButton buttonEditare = new JButton("Editare");
-		final JButton buttonStergere = new JButton("Stergere");
+	private void initButtons() {
+		buttonSalvare = new JButton("Salvare");
+		buttonEditare = new JButton("Editare");
+		buttonStergere = new JButton("Stergere");
 
-		buttonEditare.addActionListener(actionListener);
-		buttonSalvare.addActionListener(actionListener);
-		buttonStergere.addActionListener(actionListener);
 
 		add(buttonSalvare, buttonConstrains());
 		add(buttonEditare, buttonConstrainsEast());
 		add(buttonStergere, buttonConstrainsEast());
 	}
+	
+
 
 	private GridBagConstraints buttonConstrains() {
 		GridBagConstraints ctbutton = new GridBagConstraints();
@@ -257,7 +278,7 @@ public class StocView extends JPanel {
 			return textFieldCod.getText();
 
 		case FIELD_DATA:
-			return String.valueOf((datePicker.getValue()));
+			return String.valueOf(datePicker.getValue());
 		default:
 			return null;
 		}
@@ -281,12 +302,19 @@ public class StocView extends JPanel {
 			break;
 
 		case FIELD_DATA:
-			datePicker.setAccessibleText(value);
+			datePicker.setValue(LOCAL_DATE(value));;
 			break;
 		default:
 			break;
 		}
 	}
+	
+	public static final LocalDate LOCAL_DATE (String dateString){
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	    LocalDate localDate = LocalDate.parse(dateString, formatter);
+	    return localDate;
+	}
+
 
 	public JTable getTable() {
 		return table;
@@ -294,6 +322,68 @@ public class StocView extends JPanel {
 
 	public void setTable(JTable table) {
 		this.table = table;
+	}
+
+	public DocumentListener getDocumentListener() {
+		return documentListener;
+	}
+
+
+
+
+	public void setDocumentListener(DocumentListener documentListener) {
+		this.documentListener = documentListener;
+	}
+
+
+
+
+	public ActionListener getActionListener() {
+		return actionListener;
+	}
+
+
+
+
+	public void setActionListener(ActionListener newActionListener) {
+		checkBoxAprobat.removeActionListener(actionListener);
+		checkBoxAprobat.addActionListener(newActionListener);
+
+		
+		buttonEditare.removeActionListener(actionListener);
+		buttonEditare.addActionListener(newActionListener);
+		
+		buttonSalvare.removeActionListener(actionListener);
+		buttonSalvare.addActionListener(newActionListener);
+		
+		buttonStergere.removeActionListener(actionListener);
+		buttonStergere.addActionListener(newActionListener);
+		
+		actionListener = newActionListener;
+	}
+
+
+
+
+	public ChangeListener<?> getChangeListener() {
+		return changeListener;
+	}
+
+
+
+
+	@SuppressWarnings("unchecked")
+	public void setChangeListener(ChangeListener<?> newchangeListener) {
+		changeListener = newchangeListener;
+		Platform.runLater(new Runnable() {	
+			@Override
+			public void run() {
+				datePicker.valueProperty().addListener((ChangeListener<? super LocalDate>) changeListener);
+				
+			}
+		});
+		
+		
 	}
 
 }

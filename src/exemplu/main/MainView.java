@@ -1,6 +1,7 @@
 package exemplu.main;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;

@@ -2,6 +2,7 @@ package exemplu.functionalitati.stoc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,26 +11,34 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.*;
+import javax.swing.table.TableColumn;
 
 import exemplu.common.interfaces.ControllerInterface;
 import exemplu.common.models.Attribute;
 import exemplu.common.models.GenericTableModel;
 import exemplu.common.models.RowMeta;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
-public class StocController implements ControllerInterface, ActionListener, DocumentListener {
+public class StocController implements ControllerInterface, ActionListener, DocumentListener, ChangeListener<LocalDate> {
 
 	private StocView view;
 	private StocModel model;
 	private StocDAOImpl dao;
 	
 	public StocController() {
-		view = new StocView(this, this);
+		view = new StocView();
+		setListeners();
 		model = new StocModel();
 		dao = new StocDAOImpl();
 
 		setMockData();
 		
+	}
+	private void setListeners(){
+		view.setActionListener(this);
+		view.setDocumentListener(this);
+		view.setChangeListener(this);
 	}
 	
 	public void setMockData(){
@@ -102,6 +111,9 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 			}
 			if (model.getCod().isChanged()) {
 				dao.editData("cod", model.getCod().getValue(), id);
+			}
+			if (model.getData().isChanged()){
+				dao.editData("data", model.getData().getValue(), id);
 			}
 
 			List<DistributieMagazinModel> list = model.getTableList();
@@ -177,6 +189,11 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 			targetField.setValue(newValue);
 			targetField.setChanged(true);
 		}
+	}
+
+	@Override
+	public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
+		updateField(model.getData(), StocView.FIELD_DATA);
 	}
 
 }

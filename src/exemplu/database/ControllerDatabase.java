@@ -20,7 +20,7 @@ public class ControllerDatabase {
 		// insertData();
 		// readData();
 		StocDAOImpl dao = new StocDAOImpl();
-		StocModel stoc= new StocModel();
+		StocModel stoc = new StocModel();
 
 		Attribute produs = new Attribute();
 		Attribute categorie = new Attribute();
@@ -28,36 +28,47 @@ public class ControllerDatabase {
 		Attribute cod = new Attribute();
 
 		List<DistributieMagazinModel> tableList = new ArrayList<DistributieMagazinModel>();
-		DistributieMagazinModel distributie= new DistributieMagazinModel();
-		
+		DistributieMagazinModel distributie = new DistributieMagazinModel();
+
 		Attribute magazin = new Attribute();
 		Attribute localitate = new Attribute();
 		Attribute cantitate = new Attribute();
-		
+
 		produs.setValue("apa");
 		categorie.setValue("apa 1");
 		pret.setValue("2");
 		cod.setValue("10jjsb");
-		
+
 		magazin.setValue("abc");
 		localitate.setValue("Rosiori");
 		cantitate.setValue("10");
-		
+
 		distributie.setMagazin(magazin);
 		distributie.setLocalitate(localitate);
 		distributie.setCantitate(cantitate);
-		
+
 		tableList.add(distributie);
-		
+
 		stoc.setCategorie(categorie);
 		stoc.setCod(cod);
 		stoc.setPret(pret);
 		stoc.setProdus(produs);
 		stoc.setTableList(tableList);
-		
-		dao.insertData(stoc);
-		
-		
+
+		// dao.insertData(stoc);
+		List<Integer> list = dao.listOfId();
+		int row=list.size();
+		List<StocModel> lAngajat = new ArrayList<StocModel>();
+		lAngajat = dao.readData();
+		int j=0;
+		while (j < row) {
+			for (StocModel angajatFromL : lAngajat) {
+				System.out.print(list.get(j) + ".");
+				System.out.println(angajatFromL.toString());
+				j++;
+			}
+		}
+
 	}
 
 	public static void createTables() {
