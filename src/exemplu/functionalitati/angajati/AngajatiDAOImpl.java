@@ -25,13 +25,13 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
+
 			String sql = "INSERT INTO ANGAJATI(NUME, PRENUME, PRODUS, PRET, CANTITATE, COMISION) VALUES('"
 					+ angajat.getNume().getValue() + "'," + "'" + angajat.getPrenume().getValue() + "'" + "," + "'"
 					+ angajat.getTabeModel().get(0).getAttribute(0).getValue() + "'" + "," + "'"
 					+ angajat.getTabeModel().get(0).getAttribute(1).getValue() + "'" + ",'"
 					+ angajat.getTabeModel().get(0).getAttribute(2).getValue() + "'," + "'"
 					+ angajat.getTabeModel().get(0).getAttribute(3).getValue() + "'" + ");";
-
 			stat.executeUpdate(sql);
 
 			System.out.println("Record is insert into Employees table for employee: " + angajat.getNume() + " "
@@ -42,19 +42,16 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			if (stat != null) {
-				try {
+			try {
+				if (stat != null) {
 					stat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (dbConnection != null) {
-				try {
+				if (dbConnection != null) {
 					dbConnection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -72,33 +69,33 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
 			dbConnection.setAutoCommit(false);
 			System.out.println("Opened database successfully");
+
 			stat = dbConnection.createStatement();
+
 			String sql = "SELECT * FROM ANGAJATI;";
 
 			rs = stat.executeQuery(sql);
-
 			while (rs.next()) {
-				AngajatiRow angajatiRow = new AngajatiRow();
-				List<AngajatiRow> tabelModel = new ArrayList<>();
 				AngajatiModel angajat = new AngajatiModel();
 
 				Attribute aNume = new Attribute();
-				Attribute aPrenume = new Attribute();
-
 				aNume.setValue(rs.getString("NUME"));
 				angajat.setNume(aNume);
 
+				Attribute aPrenume = new Attribute();
 				aPrenume.setValue(rs.getString("PRENUME"));
 				angajat.setPrenume(aPrenume);
 
+				AngajatiRow angajatiRow = new AngajatiRow();
 				angajatiRow.getAttribute(0).setValue(rs.getString("PRODUS"));
 				angajatiRow.getAttribute(1).setValue(rs.getString("PRET"));
 				angajatiRow.getAttribute(2).setValue(rs.getString("CANTITATE"));
 				angajatiRow.getAttribute(3).setValue(rs.getString("COMISION"));
 
-				tabelModel.add(angajatiRow);
+				List<AngajatiRow> tabelModelAngajati = new ArrayList<>();
+				tabelModelAngajati.add(angajatiRow);
 
-				angajat.setTabelModel(tabelModel);
+				angajat.setTabelModel(tabelModelAngajati);
 
 				list.add(angajat);
 			}
@@ -108,26 +105,18 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			if (stat != null) {
-				try {
+			try {
+				if (stat != null) {
 					stat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (dbConnection != null) {
-				try {
+				if (dbConnection != null) {
 					dbConnection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (rs != null) {
-				try {
+				if (rs != null) {
 					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 		return null;
@@ -137,6 +126,7 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 	public void editData(String columnName, String columnValue, int id) {
 		Connection dbConnection = null;
 		Statement stat = null;
+
 		try {
 			Class.forName("org.sqlite.JDBC");
 			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
@@ -144,8 +134,10 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
+
 			String sql = "UPDATE ANGAJATI" + " SET " + columnName + "='" + columnValue + "' WHERE ID=" + id + ";";
 			stat.executeUpdate(sql);
+
 			dbConnection.commit();
 
 			System.out.println("Record is edited.");
@@ -154,32 +146,24 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (stat != null) {
-				try {
+			try {
+				if (stat != null) {
 					stat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (dbConnection != null) {
-				try {
+				if (dbConnection != null) {
 					dbConnection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
-	}
-
-	@Override
-	public void updateDatabase() {
-
 	}
 
 	@Override
 	public void deleteData(int id) {
 		Connection dbConnection = null;
 		Statement stat = null;
+
 		try {
 			Class.forName("org.sqlite.JDBC");
 			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
@@ -187,29 +171,27 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
+
 			String sql = "DELETE FROM ANGAJATI WHERE ID=" + id + "";
 			stat.executeUpdate(sql);
 
 			System.out.println("Record is deleted from Angajati.");
+
 			dbConnection.commit();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (stat != null) {
-				try {
+			try {
+				if (stat != null) {
 					stat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (dbConnection != null) {
-				try {
+				if (dbConnection != null) {
 					dbConnection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -226,13 +208,13 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
 			dbConnection.setAutoCommit(false);
 			System.out.println("Opened database successfully");
+
 			stat = dbConnection.createStatement();
+
 			String sql = "SELECT * FROM ANGAJATI;";
 
 			rs = stat.executeQuery(sql);
-
 			while (rs.next()) {
-
 				int id = Integer.parseInt(rs.getString("ID"));
 				list.add(id);
 			}
@@ -242,31 +224,24 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			if (stat != null) {
-				try {
+			try {
+				if (stat != null) {
 					stat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (dbConnection != null) {
-				try {
+				if (dbConnection != null) {
 					dbConnection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (rs != null) {
-				try {
+				if (rs != null) {
 					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 		return null;
 	}
-	
+
+	@Override
 	public List<AngajatiModel> search(String numeValue, String prenumeValue) {
 		Connection dbConnection = null;
 		Statement stat = null;
@@ -279,35 +254,37 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
 			dbConnection.setAutoCommit(false);
 			System.out.println("Opened database successfully");
+
 			stat = dbConnection.createStatement();
+
 			String sql = "SELECT * FROM ANGAJATI;";
 
 			rs = stat.executeQuery(sql);
-
 			while (rs.next()) {
-				AngajatiRow angajatiRow = new AngajatiRow();
-				List<AngajatiRow> tabelModel = new ArrayList<>();
-				AngajatiModel angajat = new AngajatiModel();
+				if ((rs.getString("NUME").equals(numeValue) && rs.getString("PRENUME").equals(prenumeValue))) {
+					AngajatiModel angajat = new AngajatiModel();
 
-				Attribute aNume = new Attribute();
-				Attribute aPrenume = new Attribute();
+					Attribute aNume = new Attribute();
+					aNume.setValue(rs.getString("NUME"));
+					angajat.setNume(aNume);
 
-				aNume.setValue(rs.getString("NUME"));
-				angajat.setNume(aNume);
+					Attribute aPrenume = new Attribute();
+					aPrenume.setValue(rs.getString("PRENUME"));
+					angajat.setPrenume(aPrenume);
 
-				aPrenume.setValue(rs.getString("PRENUME"));
-				angajat.setPrenume(aPrenume);
+					AngajatiRow angajatiRow = new AngajatiRow();
+					angajatiRow.getAttribute(0).setValue(rs.getString("PRODUS"));
+					angajatiRow.getAttribute(1).setValue(rs.getString("PRET"));
+					angajatiRow.getAttribute(2).setValue(rs.getString("CANTITATE"));
+					angajatiRow.getAttribute(3).setValue(rs.getString("COMISION"));
 
-				angajatiRow.getAttribute(0).setValue(rs.getString("PRODUS"));
-				angajatiRow.getAttribute(1).setValue(rs.getString("PRET"));
-				angajatiRow.getAttribute(2).setValue(rs.getString("CANTITATE"));
-				angajatiRow.getAttribute(3).setValue(rs.getString("COMISION"));
+					List<AngajatiRow> tabelModel = new ArrayList<>();
+					tabelModel.add(angajatiRow);
 
-				tabelModel.add(angajatiRow);
+					angajat.setTabelModel(tabelModel);
 
-				angajat.setTabelModel(tabelModel);
-
-				list.add(angajat);
+					list.add(angajat);
+				}
 			}
 			return list;
 		} catch (SQLException e) {
@@ -315,29 +292,20 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			if (stat != null) {
-				try {
+			try {
+				if (stat != null) {
 					stat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (dbConnection != null) {
-				try {
+				if (dbConnection != null) {
 					dbConnection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (rs != null) {
-				try {
+				if (rs != null) {
 					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 		return null;
 	}
-
 }

@@ -1,6 +1,5 @@
 package exemplu.functionalitati.angajati;
 
-import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -26,16 +25,21 @@ public class AngajatiView extends JPanel {
 	private JTextField jTextFieldNume;
 	private JTextField jTextFieldPrenume;
 	private JTable table;
+	private DocumentListener documentListener;
+	private ActionListener actionListener;
+	private JButton jButtonSave;
+	private JButton jButtonEdit;
+	private JButton jButtonDelete;
 
-	public AngajatiView(final DocumentListener listener, final ActionListener actionListener) {
+	public AngajatiView() {
 		setLayout(new GridBagLayout());
 
 		initFieldNume();
 		initFieldPrenume();
-		initButton(actionListener);
+		initButton();
 
-		jTextFieldNume.getDocument().addDocumentListener(listener);
-		jTextFieldPrenume.getDocument().addDocumentListener(listener);
+		jTextFieldNume.getDocument().addDocumentListener(documentListener);
+		jTextFieldPrenume.getDocument().addDocumentListener(documentListener);
 
 		table = new JTable();
 		add(new JScrollPane(table), getFillerConstraints(3, 0));
@@ -47,9 +51,7 @@ public class AngajatiView extends JPanel {
 		add(jLabelNume, getConstraints(0, 0));
 		jTextFieldNume = new JTextField(20);
 		jTextFieldNume.getDocument().putProperty(FIELD_KEY, FIELD_NUME);
-
 		add(jTextFieldNume, getConstraints(0, 1));
-
 	}
 
 	private void initFieldPrenume() {
@@ -60,19 +62,18 @@ public class AngajatiView extends JPanel {
 		add(jTextFieldPrenume, getConstraints(1, 1));
 	}
 
-	private void initButton(final ActionListener actionListener) {
-		final JButton jButtonSave = new JButton("Salvare");
+	private void initButton() {
+		jButtonSave = new JButton("Salvare");
 		jButtonSave.addActionListener(actionListener);
 		add(jButtonSave, getConstraints(4, 0));
 
-		final JButton jButtonEdit = new JButton("Editare");
+		jButtonEdit = new JButton("Editare");
 		jButtonEdit.addActionListener(actionListener);
 		add(jButtonEdit, getConstraints(4, 1));
 
-		final JButton jButtonDelete = new JButton("Stergere");
+		jButtonDelete = new JButton("Stergere");
 		jButtonDelete.addActionListener(actionListener);
 		add(jButtonDelete, getConstraints(4, 2, 13));
-
 	}
 
 	private GridBagConstraints getConstraints(final int row, final int column) {
@@ -139,5 +140,30 @@ public class AngajatiView extends JPanel {
 		if (editor != null) {
 			editor.stopCellEditing();
 		}
+	}
+
+	public DocumentListener getDocumentListener() {
+		return documentListener;
+	}
+
+	public void setDocumentListener(DocumentListener listener) {
+		this.documentListener = listener;
+	}
+
+	public ActionListener getActionListener() {
+		return actionListener;
+	}
+
+	public void setActionListener(ActionListener newActionListener) {
+		jButtonEdit.removeActionListener(actionListener);
+		jButtonEdit.addActionListener(newActionListener);
+
+		jButtonSave.removeActionListener(actionListener);
+		jButtonSave.addActionListener(newActionListener);
+
+		jButtonDelete.removeActionListener(actionListener);
+		jButtonDelete.addActionListener(newActionListener);
+
+		actionListener = newActionListener;
 	}
 }

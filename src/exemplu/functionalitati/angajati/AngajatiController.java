@@ -20,10 +20,16 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 	private AngajatiDAOImpl dao;
 
 	public AngajatiController() {
-		view = new AngajatiView(this, this);
+		view = new AngajatiView();
 		model = new AngajatiModel();
 		dao = new AngajatiDAOImpl();
 		setMockData();
+		setListeners();
+	}
+	
+	private void setListeners(){
+		view.setActionListener(this);
+		view.setDocumentListener(this);
 	}
 
 	private void setMockData() {
@@ -31,13 +37,18 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 		final AngajatiRow row = new AngajatiRow();
 		tabelModel.add(row);
 		final RowMeta metadata = model.getRowMeta();
+		metadata.setColumnNames(columnNames());
+		view.setTableModel(new GenericTableModel<>(tabelModel, metadata));
+	}
+
+	private List<String> columnNames() {
 		final List<String> columnNames = new ArrayList<>();
 		columnNames.add("Produs");
 		columnNames.add("Pret");
 		columnNames.add("Cantitate");
 		columnNames.add("Comision");
-		metadata.setColumnNames(columnNames);
-		view.setTableModel(new GenericTableModel<>(tabelModel, metadata));
+		return columnNames;
+
 	}
 
 	@Override
@@ -50,9 +61,8 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 
 		if (event.getActionCommand().equals("Salvare")) {
 			view.stopEditing();
-			// System.out.println(model.toString());
 			dao.insertData(model);
-			System.err.println("Inserted into db.");
+			System.err.println("Inserted into database.");
 		}
 		if (event.getActionCommand().equals("Editare")) {
 			int size = dao.listOfId().size();
@@ -71,7 +81,6 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 					dao.editData(attributeName(i), list.get(0).getAttribute(i).getValue(), id);
 				}
 			}
-
 		}
 		if (event.getActionCommand().equals("Stergere")) {
 			int size = dao.listOfId().size();
@@ -117,30 +126,6 @@ public class AngajatiController implements ControllerInterface, ActionListener, 
 			targetField.setChanged(true);
 		}
 	}
-
-	// private String displayUpdateField() {
-	// final StringBuilder builder = new StringBuilder();
-	//
-	// if (model.getNume().isChanged()) {
-	// builder.append("Nume: " + model.getNume().getValue() + "\n");
-	// }
-	//
-	// if (model.getPrenume().isChanged()) {
-	// builder.append("Prenume: " + model.getPrenume().getValue() + "\n");
-	// }
-	//
-	// List<AngajatiRow> list = model.getTabeModel();
-	// for (int i = 0; i < 4; i++) {
-	// if (list.get(0).getAttribute(i).isChanged()) {
-	// builder.append("Tabel: \n");
-	// builder.append(attributeName(i) + ": " +
-	// list.get(0).getAttribute(i).getValue());
-	// }
-	// }
-	// builder.append("\n");
-	// return builder.toString();
-	//
-	// }
 
 	private String attributeName(int i) {
 		switch (i) {

@@ -22,15 +22,14 @@ public class StocPanel extends JPanel {
 	private JButton search;
 	private JButton clear;
 	private JButton advanced;
+	private DocumentListener documentListener;
+	private ActionListener actionListener;
 
 	public StocPanel(DocumentListener listener, ActionListener actionListener) {
 		super();
 		setLayout(new GridBagLayout());
 		initFields();
-		textFieldNume.getDocument().addDocumentListener(listener);
-		textFieldPrenume.getDocument().addDocumentListener(listener);
-		addButtons(actionListener);
-
+		addButtons();
 	}
 
 	private void initFields() {
@@ -38,13 +37,14 @@ public class StocPanel extends JPanel {
 		add(jLabelNume, getConstraints(1, 0));
 		textFieldNume = new JTextField(20);
 		textFieldNume.getDocument().putProperty(FIELD_KEY, FIELD_NUME);
-
+		textFieldNume.getDocument().addDocumentListener(documentListener);
 		add(textFieldNume, getConstraints(1, 0));
 
 		final JLabel jLabelPrenume = new JLabel("   Prenume:   ");
 		add(jLabelPrenume, getConstraints(2, 0));
 		textFieldPrenume = new JTextField(20);
 		textFieldPrenume.getDocument().putProperty(FIELD_KEY, FIELD_PRENUME);
+		textFieldPrenume.getDocument().addDocumentListener(documentListener);
 		add(textFieldPrenume, getConstraints(2, 0));
 	}
 
@@ -57,7 +57,7 @@ public class StocPanel extends JPanel {
 		return constraints;
 	}
 
-	public void addButtons(ActionListener actionListener) {
+	public void addButtons() {
 		clear = new JButton("\u2713");
 		clear.addActionListener(actionListener);
 		add(clear);
@@ -71,4 +71,19 @@ public class StocPanel extends JPanel {
 		add(search);
 	}
 
+	public DocumentListener getDocumentListener() {
+		return documentListener;
+	}
+
+	public void setDocumentListener(DocumentListener documentListener) {
+		this.documentListener = documentListener;
+	}
+
+	public ActionListener getActionListener() {
+		return actionListener;
+	}
+
+	public void setActionListener(ActionListener actionListener) {
+		this.actionListener = actionListener;
+	}
 }

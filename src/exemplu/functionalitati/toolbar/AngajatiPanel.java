@@ -13,7 +13,6 @@ import javax.swing.event.DocumentListener;
 
 @SuppressWarnings("serial")
 public class AngajatiPanel extends JPanel {
-
 	public static final Insets INSETS = new Insets(4, 4, 4, 4);
 	public static final String FIELD_PRODUS = "Produs";
 	public static final String FIELD_KEY = "FieldName";
@@ -23,28 +22,29 @@ public class AngajatiPanel extends JPanel {
 	private JButton search;
 	private JButton clear;
 	private JButton advanced;
-	
-	public AngajatiPanel(ActionListener actionListener, DocumentListener documentListener) {
+	private DocumentListener documentListener;
+	private ActionListener actionListener;
+
+	public AngajatiPanel() {
 		super();
 		setLayout(new GridBagLayout());
 		initFields();
-		textFieldProdus.getDocument().addDocumentListener(documentListener);
-		textFieldPret.getDocument().addDocumentListener(documentListener);
-		addButtons(actionListener);
+		addButtons();
 	}
-	
+
 	private void initFields() {
 		final JLabel jLabelNume = new JLabel("Produs:   ");
 		add(jLabelNume, getConstraints(1, 0));
 		textFieldProdus = new JTextField(20);
 		textFieldProdus.getDocument().putProperty(FIELD_KEY, FIELD_PRODUS);
-
+		textFieldProdus.getDocument().addDocumentListener(documentListener);
 		add(textFieldProdus, getConstraints(1, 0));
 
 		final JLabel jLabelPrenume = new JLabel("   Pret:   ");
 		add(jLabelPrenume, getConstraints(2, 0));
 		textFieldPret = new JTextField(20);
 		textFieldPret.getDocument().putProperty(FIELD_KEY, FIELD_PRET);
+		textFieldPret.getDocument().addDocumentListener(documentListener);
 		add(textFieldPret, getConstraints(2, 0));
 	}
 
@@ -57,7 +57,7 @@ public class AngajatiPanel extends JPanel {
 		return constraints;
 	}
 
-	public void addButtons(ActionListener actionListener) {
+	public void addButtons() {
 		clear = new JButton("\u2713");
 		clear.addActionListener(actionListener);
 		add(clear);
@@ -69,6 +69,22 @@ public class AngajatiPanel extends JPanel {
 		advanced = new JButton("Cautare avansata");
 		advanced.addActionListener(actionListener);
 		add(search);
+	}
+
+	public DocumentListener getDocumentListener() {
+		return documentListener;
+	}
+
+	public void setDocumentListener(DocumentListener documentListener) {
+		this.documentListener = documentListener;
+	}
+
+	public ActionListener getActionListener() {
+		return actionListener;
+	}
+
+	public void setActionListener(ActionListener actionListener) {
+		this.actionListener = actionListener;
 	}
 
 }

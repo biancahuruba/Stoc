@@ -12,8 +12,8 @@ public interface AngajatiDAO {
 
 	public void editData(String columnName, String columnValue, int id);
 
-	public void updateDatabase();
-
 	public void deleteData(int id);
+
+	public List<AngajatiModel> search(String numeValue, String prenumeValue);
 
 }

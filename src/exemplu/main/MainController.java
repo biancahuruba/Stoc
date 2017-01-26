@@ -20,6 +20,7 @@ public class MainController implements ActionListener {
 		mainFrame.setContentPane(view);
 		mainFrame.setJMenuBar(new ApplicationMenu(this));
 		mainFrame.setVisible(true);
+
 		controllerToolbar = new AplicationToolBarController();
 		view.setContainerToolBar(controllerToolbar.getView());
 	}
@@ -35,10 +36,9 @@ public class MainController implements ActionListener {
 		case ApplicationMenu.COMMAND_EXIT:
 			System.exit(0);
 			break;
-		case ApplicationToolBar.COMBO_TIP: {
+		case ApplicationToolBar.COMBO_TIP:
 			controllerToolbar.actionPerformed(event);
 			break;
-		}
 		default:
 			currentController = ControllerFactory.getController(actionCommand);
 			setCurrentView(currentController.getView());

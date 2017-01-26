@@ -52,7 +52,7 @@ public class DistributieMagazinModel extends GenericRowModel {
 		return null;
 	}
 
-	public void setAttribute(final int index,final String value ) {
+	public void setAttribute(final int index, final String value) {
 		switch (index) {
 		case 0:
 			magazin.setValue(value);
@@ -71,5 +71,4 @@ public class DistributieMagazinModel extends GenericRowModel {
 
 		}
 	}
-
 }

@@ -16,6 +16,7 @@ public class ApplicationBar extends JToolBar {
 	public ApplicationBar(final ActionListener listener) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setFloatable(false);
+
 		final JButton buttonStoc = new JButton("Stoc");
 		buttonStoc.setActionCommand(ControllerFactory.CONTROLLER_STOC);
 		buttonStoc.addActionListener(listener);
@@ -30,7 +31,6 @@ public class ApplicationBar extends JToolBar {
 		buttonAngajati.setBackground(Color.lightGray);
 		add(buttonAngajati);
 		setOrientation(SwingConstants.VERTICAL);
-
 	}
 
 	private Dimension getMaxSize(final JButton button) {

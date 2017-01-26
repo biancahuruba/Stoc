@@ -12,7 +12,8 @@ public class AplicationToolBarController implements ControllerInterface, ActionL
 	private ApplicationToolBar toolBar;
 
 	public AplicationToolBarController() {
-		toolBar = new ApplicationToolBar(this);
+		toolBar = new ApplicationToolBar();
+		toolBar.setActionListener(this);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -36,5 +37,4 @@ public class AplicationToolBarController implements ControllerInterface, ActionL
 	public Component getView() {
 		return toolBar;
 	}
-
 }

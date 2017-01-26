@@ -12,8 +12,8 @@ public interface StocDAO {
 
 	public void editData(String columnName, String columnValue, int id);
 
-	public void updateDatabase();
-
 	public void deleteData(int id);
+	
+	public List<StocModel> search(String produsValue, String pretValue);
 
 }

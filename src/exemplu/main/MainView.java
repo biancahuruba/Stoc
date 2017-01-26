@@ -18,48 +18,28 @@ public class MainView extends JPanel {
 
 	public MainView(final ActionListener listener) {
 		setLayout(new GridBagLayout());
-		GridBagConstraints ctToolBar = new GridBagConstraints();
-		ctToolBar.fill = GridBagConstraints.HORIZONTAL;
+
+		addToolBar();
+		add(new ApplicationBar(listener), constraints(0, 1, 3));
+		add(new JScrollPane(new ApplicationJTree()), constraints(1, 1, 3));
+		addContainer();
+		GridBagConstraints ctStatusBar = constraints(0, 2, 2);
+		add(new JScrollPane(new JLabel("  Status  ")), ctStatusBar);
+
+	}
+
+	private void addToolBar() {
+		GridBagConstraints ctToolBar = constraints(0, 0, 2, 0.1, 0);
 		ctToolBar.anchor = GridBagConstraints.NORTH;
-		ctToolBar.weightx = 0.1;
-		ctToolBar.gridwidth = GridBagConstraints.REMAINDER;
-		ctToolBar.gridx = 0;
-		ctToolBar.gridy = 0;
 		containerToolBar = new JScrollPane();
 		add(containerToolBar, ctToolBar);
-		
+	}
 
-		GridBagConstraints ctBar = new GridBagConstraints();
-		ctBar = new GridBagConstraints();
-		ctBar.fill = GridBagConstraints.VERTICAL;
-		ctBar.gridx = 0;
-		ctBar.gridy = 1;
-		add(new ApplicationBar(listener), ctBar);
-
-		GridBagConstraints ct = new GridBagConstraints();
-		ct.fill = GridBagConstraints.VERTICAL;
-		ct.gridx = 1;
-		ct.gridy = 1;
-		JScrollPane cont = new JScrollPane(new ApplicationJTree());
-		add(cont, ct);
-
-		ct = new GridBagConstraints();
-		ct.fill = GridBagConstraints.BOTH;
-		ct.gridx = 2;
-		ct.gridy = 1;
-		ct.weightx = 1;
-		ct.weighty = 1;
-		ct.gridwidth = GridBagConstraints.REMAINDER;
+	private void addContainer() {
+		GridBagConstraints ctContainer = constraints(2, 1, 1, 1, 0);
+		ctContainer.weighty = 1;
 		container = new JScrollPane();
-		add(container, ct);
-
-		ct = new GridBagConstraints();
-		ct.fill = GridBagConstraints.HORIZONTAL;
-		ct.gridx = 0;
-		ct.gridy = 2;
-		JScrollPane container2 = new JScrollPane(new JLabel("  Status  "));
-		add(container2, ct);
-
+		add(container, ctContainer);
 	}
 
 	public JScrollPane getContainerToolBar() {
@@ -69,11 +49,27 @@ public class MainView extends JPanel {
 	public void setContainerToolBar(Component jPanel) {
 		this.containerToolBar.setViewportView(jPanel);
 		revalidate();
-		
 	}
 
 	public void setCurrentView(final Component view) {
 		container.setViewportView(view);
 	}
 
+	private GridBagConstraints constraints(int x, int y, int fill) {
+		GridBagConstraints ct = new GridBagConstraints();
+		ct.fill = fill;
+		ct.gridx = x;
+		ct.gridy = y;
+		return ct;
+	}
+
+	private GridBagConstraints constraints(int x, int y, int fill, double weightx, int gridwidth) {
+		GridBagConstraints ct = new GridBagConstraints();
+		ct.fill = fill;
+		ct.gridx = x;
+		ct.gridy = y;
+		ct.weightx = weightx;
+		ct.gridwidth = gridwidth;
+		return ct;
+	}
 }

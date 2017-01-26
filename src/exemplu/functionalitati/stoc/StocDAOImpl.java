@@ -17,6 +17,7 @@ public class StocDAOImpl implements StocDAO {
 	public void insertData(StocModel stoc) {
 		Connection dbConnection = null;
 		Statement stat = null;
+
 		try {
 			Class.forName("org.sqlite.JDBC");
 			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
@@ -24,7 +25,7 @@ public class StocDAOImpl implements StocDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
-			
+
 			String sql = "INSERT INTO STOC (PRODUS,CATEGORIE,PRET,COD,DATA, MAGAZIN, LOCALITATE, CANTITATE) VALUES('"
 					+ stoc.getProdus().getValue() + "'" + "," + "'" + stoc.getCategorie().getValue() + "'" + "," + "'"
 					+ stoc.getPret().getValue() + "'" + ",'" + stoc.getCod().getValue() + "','"
@@ -34,25 +35,23 @@ public class StocDAOImpl implements StocDAO {
 			stat.executeUpdate(sql);
 
 			System.out.println("Record is insert into Stoc table.");
+
 			dbConnection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			if (stat != null) {
-				try {
+			try {
+				if (stat != null) {
 					stat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (dbConnection != null) {
-				try {
+				if (dbConnection != null) {
 					dbConnection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -72,44 +71,43 @@ public class StocDAOImpl implements StocDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
+
 			String sql = "SELECT * FROM STOC;";
 			rs = stat.executeQuery(sql);
-
 			while (rs.next()) {
 				StocModel stoc = new StocModel();
-				DistributieMagazinModel distributie = new DistributieMagazinModel();
-				List<DistributieMagazinModel> row = new ArrayList<>();
 
 				Attribute aCod = new Attribute();
-				Attribute aProdus = new Attribute();
-				Attribute aCategorie = new Attribute();
-				Attribute aPret = new Attribute();
-				Attribute aData = new Attribute();
-
 				aCod.setValue(rs.getString("COD"));
 				stoc.setCod(aCod);
 
+				Attribute aProdus = new Attribute();
 				aProdus.setValue(rs.getString("PRODUS"));
 				stoc.setProdus(aProdus);
 
+				Attribute aCategorie = new Attribute();
 				aCategorie.setValue(rs.getString("CATEGORIE"));
 				stoc.setCategorie(aCategorie);
 
+				Attribute aPret = new Attribute();
 				aPret.setValue(rs.getString("PRET"));
 				stoc.setPret(aPret);
 
+				Attribute aData = new Attribute();
 				aData.setValue(rs.getString("DATA"));
 				stoc.setData(aData);
 
+				DistributieMagazinModel distributie = new DistributieMagazinModel();
 				distributie.getAttribute(0).setValue(rs.getString("MAGAZIN"));
 				distributie.getAttribute(1).setValue(rs.getString("LOCALITATE"));
 				distributie.getAttribute(2).setValue(rs.getString("CANTITATE"));
+
+				List<DistributieMagazinModel> row = new ArrayList<>();
 				row.add(distributie);
 
 				stoc.setTableList(row);
 
 				list.add(stoc);
-
 			}
 			return list;
 		} catch (SQLException e) {
@@ -117,26 +115,18 @@ public class StocDAOImpl implements StocDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			if (stat != null) {
-				try {
+			try {
+				if (stat != null) {
 					stat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (dbConnection != null) {
-				try {
+				if (dbConnection != null) {
 					dbConnection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (rs != null) {
-				try {
+				if (rs != null) {
 					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 		return null;
@@ -154,9 +144,10 @@ public class StocDAOImpl implements StocDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
-			String sql = "UPDATE STOC SET " + columnName + " ='" + columnValue + "' WHERE ID=" + id + ";";
 
+			String sql = "UPDATE STOC SET " + columnName + " ='" + columnValue + "' WHERE ID=" + id + ";";
 			stat.executeUpdate(sql);
+
 			dbConnection.commit();
 
 			System.out.println("Record is edited for Stoc.");
@@ -165,31 +156,22 @@ public class StocDAOImpl implements StocDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (stat != null) {
-				try {
+			try {
+				if (stat != null) {
 					stat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (dbConnection != null) {
-				try {
+				if (dbConnection != null) {
 					dbConnection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 
 	@Override
-	public void updateDatabase() {
-
-	}
-
-	@Override
 	public void deleteData(int id) {
-
 		Connection dbConnection = null;
 		Statement stat = null;
 
@@ -200,31 +182,28 @@ public class StocDAOImpl implements StocDAO {
 			System.out.println("Opened database successfully");
 
 			stat = dbConnection.createStatement();
-			String sql = "DELETE FROM STOC WHERE ID=" + id + ";";
 
+			String sql = "DELETE FROM STOC WHERE ID=" + id + ";";
 			stat.executeUpdate(sql);
+
 			dbConnection.commit();
 
 			System.out.println("Record is deleted from Stoc.  ");
-
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (stat != null) {
-				try {
+			try {
+				if (stat != null) {
 					stat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (dbConnection != null) {
-				try {
+				if (dbConnection != null) {
 					dbConnection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -241,13 +220,12 @@ public class StocDAOImpl implements StocDAO {
 			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
 			dbConnection.setAutoCommit(false);
 			System.out.println("Opened database successfully");
+
 			stat = dbConnection.createStatement();
+
 			String sql = "SELECT * FROM STOC;";
-
 			rs = stat.executeQuery(sql);
-
 			while (rs.next()) {
-
 				int id = Integer.parseInt(rs.getString("ID"));
 				list.add(id);
 			}
@@ -257,29 +235,98 @@ public class StocDAOImpl implements StocDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			if (stat != null) {
-				try {
+			try {
+				if (stat != null) {
 					stat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (dbConnection != null) {
-				try {
+				if (dbConnection != null) {
 					dbConnection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
-			}
-			if (rs != null) {
-				try {
+				if (rs != null) {
 					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 		return null;
 	}
 
+	@Override
+	public List<StocModel> search(String produsValue, String pretValue) {
+		Connection dbConnection = null;
+		Statement stat = null;
+		ResultSet rs = null;
+
+		final List<StocModel> list = new ArrayList<>();
+
+		try {
+			Class.forName("org.sqlite.JDBC");
+			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
+			dbConnection.setAutoCommit(false);
+			System.out.println("Opened database successfully");
+
+			stat = dbConnection.createStatement();
+
+			String sql = "SELECT * FROM STOC;";
+			rs = stat.executeQuery(sql);
+			while (rs.next()) {
+				if ((rs.getString("PRODUS").equals(produsValue) && (rs.getString("PRET").equals(pretValue)))) {
+					StocModel stoc = new StocModel();
+
+					Attribute aCod = new Attribute();
+					aCod.setValue(rs.getString("COD"));
+					stoc.setCod(aCod);
+
+					Attribute aProdus = new Attribute();
+					aProdus.setValue(rs.getString("PRODUS"));
+					stoc.setProdus(aProdus);
+
+					Attribute aCategorie = new Attribute();
+					aCategorie.setValue(rs.getString("CATEGORIE"));
+					stoc.setCategorie(aCategorie);
+
+					Attribute aPret = new Attribute();
+					aPret.setValue(rs.getString("PRET"));
+					stoc.setPret(aPret);
+
+					Attribute aData = new Attribute();
+					aData.setValue(rs.getString("DATA"));
+					stoc.setData(aData);
+
+					DistributieMagazinModel distributie = new DistributieMagazinModel();
+					distributie.getAttribute(0).setValue(rs.getString("MAGAZIN"));
+					distributie.getAttribute(1).setValue(rs.getString("LOCALITATE"));
+					distributie.getAttribute(2).setValue(rs.getString("CANTITATE"));
+
+					List<DistributieMagazinModel> row = new ArrayList<>();
+					row.add(distributie);
+
+					stoc.setTableList(row);
+
+					list.add(stoc);
+				}
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stat != null) {
+					stat.close();
+				}
+				if (dbConnection != null) {
+					dbConnection.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
 }

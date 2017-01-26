@@ -14,31 +14,34 @@ import javax.swing.JToolBar;
 
 @SuppressWarnings("serial")
 public class ApplicationToolBar extends JToolBar {
-
+	public static final String COMBO_TIP = "Combo Tip";
+	private JComboBox<String> combo;
 	private JButton search;
 	private JButton clear;
 	private JButton advanced;
-	public static final String COMBO_TIP = "Combo Tip";
-	private JComboBox<String> combo;
 	private JPanel container;
+	private ActionListener actionListener;
 
-	public ApplicationToolBar(ActionListener actionListener) {
+	public ApplicationToolBar() {
 		setLayout(new GridBagLayout());
 		setVisible(true);
-		combo = new JComboBox<>(new String[] { "Stoc", "Angajati" });
-
-		combo.addActionListener(actionListener);
-		combo.setActionCommand(COMBO_TIP);
-		GridBagConstraints ctCombo = new GridBagConstraints();
-		ctCombo.anchor = GridBagConstraints.WEST;
-		add(combo, ctCombo);
+		initCombo();
 		GridBagConstraints ctContainer = new GridBagConstraints();
 		ctContainer.weightx = 1;
 		ctContainer.fill = GridBagConstraints.BOTH;
 		container = new JPanel();
 		container.setBorder(BorderFactory.createEmptyBorder());
 		add(container, ctContainer);
-		addButtons(actionListener);
+		addButtons();
+	}
+
+	private void initCombo() {
+		combo = new JComboBox<>(new String[] { "Stoc", "Angajati" });
+		combo.addActionListener(actionListener);
+		combo.setActionCommand(COMBO_TIP);
+		GridBagConstraints ctCombo = new GridBagConstraints();
+		ctCombo.anchor = GridBagConstraints.WEST;
+		add(combo, ctCombo);
 	}
 
 	public void addFieldsTipAngajat() {
@@ -58,7 +61,7 @@ public class ApplicationToolBar extends JToolBar {
 	public void addNewTextField(String name) {
 		JLabel label = new JLabel(name);
 		container.add(label);
-		
+
 		JTextField textField = new JTextField(15);
 		container.add(textField);
 		container.validate();
@@ -66,7 +69,7 @@ public class ApplicationToolBar extends JToolBar {
 		repaint();
 	}
 
-	public void addButtons(ActionListener actionListener) {
+	public void addButtons() {
 		clear = new JButton("\u2713");
 		clear.addActionListener(actionListener);
 		add(clear);
@@ -78,7 +81,6 @@ public class ApplicationToolBar extends JToolBar {
 		advanced = new JButton("\uDC40");
 		advanced.addActionListener(actionListener);
 		add(advanced);
-
 	}
 
 	public JComboBox<String> getCombo() {
@@ -89,4 +91,13 @@ public class ApplicationToolBar extends JToolBar {
 		this.combo = combo;
 	}
 
+	public ActionListener getActionListener() {
+		return actionListener;
+	}
+
+	public void setActionListener(ActionListener newactionListener) {
+		combo.removeActionListener(actionListener);
+		combo.addActionListener(newactionListener);
+		actionListener = newactionListener;
+	}
 }

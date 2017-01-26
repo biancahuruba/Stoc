@@ -20,51 +20,55 @@ import exemplu.common.models.RowMeta;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
-public class StocController implements ControllerInterface, ActionListener, DocumentListener, ChangeListener<LocalDate> {
-
+public class StocController
+		implements ControllerInterface, ActionListener, DocumentListener, ChangeListener<LocalDate> {
 	private StocView view;
 	private StocModel model;
 	private StocDAOImpl dao;
-	
+
 	public StocController() {
 		view = new StocView();
-		setListeners();
 		model = new StocModel();
 		dao = new StocDAOImpl();
-
+		setListeners();
 		setMockData();
-		
+
 	}
-	private void setListeners(){
+
+	private void setListeners() {
 		view.setActionListener(this);
 		view.setDocumentListener(this);
 		view.setChangeListener(this);
 	}
-	
-	public void setMockData(){
 
+	public void setMockData() {
 		final List<DistributieMagazinModel> tabelModel = model.getTableList();
 		final DistributieMagazinModel row = new DistributieMagazinModel();
 		tabelModel.add(row);
 		final RowMeta metadata = model.getRowMeta();
-		
+		metadata.setColumnNames(columnNames());
+		view.setTableModel(new GenericTableModel<>(tabelModel, metadata));
+		TableColumn col = view.getTable().getColumnModel().getColumn(1);
+		col.setCellEditor(new DefaultCellEditor(comboBox()));
+	}
+
+	private List<String> columnNames() {
 		final List<String> columnNames = new ArrayList<>();
 		columnNames.add("Magazin");
 		columnNames.add("Localitate");
 		columnNames.add("Cantitate");
-		metadata.setColumnNames(columnNames);
-		
-		view.setTableModel(new GenericTableModel<>(tabelModel, metadata));
+		return columnNames;
+	}
+
+	private JComboBox<String> comboBox() {
 		final JComboBox<String> comboBox = new JComboBox<>();
 		final String choices[] = { "Arad", "Almas", "Fantanele", "Hunedoara", "Luna", "Negreni", "Rosiori", "Tasnad",
 				"Zegujani" };
 		for (int i = 0; i < choices.length; i++) {
 			comboBox.addItem(choices[i]);
 		}
-		TableColumn col=view.getTable().getColumnModel().getColumn(1);
-		col.setCellEditor(new DefaultCellEditor(comboBox));
+		return comboBox;
 	}
-	
 
 	@Override
 	public JPanel getView() {
@@ -89,30 +93,26 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 			view.setAprobat();
 		}
 		if (event.getActionCommand().equals("Salvare")) {
-			 view.stopEditing();
-			 dao.insertData(model);
-			//System.out.println(model.toString());
-			System.err.println("Inserted into db.");
+			view.stopEditing();
+			dao.insertData(model);
+			System.err.println("Inserted into database.");
 		}
 		if (event.getActionCommand().equals("Editare")) {
 			int size = dao.listOfId().size();
 			int id = dao.listOfId().get(size - 1);
-
 			if (model.getProdus().isChanged()) {
 				dao.editData("produs", model.getProdus().getValue(), id);
 			}
-
 			if (model.getCategorie().isChanged()) {
 				dao.editData("categorie", model.getCategorie().getValue(), id);
 			}
-
 			if (model.getPret().isChanged()) {
 				dao.editData("pret", model.getPret().getValue(), id);
 			}
 			if (model.getCod().isChanged()) {
 				dao.editData("cod", model.getCod().getValue(), id);
 			}
-			if (model.getData().isChanged()){
+			if (model.getData().isChanged()) {
 				dao.editData("data", model.getData().getValue(), id);
 			}
 
@@ -122,7 +122,6 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 					dao.editData(attributeName(i), list.get(0).getAttribute(i).getValue(), id);
 				}
 			}
-
 		}
 		if (event.getActionCommand().equals("Stergere")) {
 			int size = dao.listOfId().size();
@@ -167,11 +166,9 @@ public class StocController implements ControllerInterface, ActionListener, Docu
 		case StocView.FIELD_CATEGORIE:
 			updateField(model.getCategorie(), fieldName);
 			break;
-
 		case StocView.FIELD_PRET:
 			updateField(model.getPret(), fieldName);
 			break;
-
 		case StocView.FIELD_COD:
 			updateField(model.getCod(), fieldName);
 			break;

@@ -29,7 +29,7 @@ public class StocModel {
 		categorie = new Attribute();
 		pret = new Attribute();
 		cod = new Attribute();
-		data=new Attribute();
+		data = new Attribute();
 	}
 
 	public void addRow(DistributieMagazinModel model, int index) {
@@ -53,7 +53,7 @@ public class StocModel {
 	}
 
 	public void setValue(String value, int row, int column) {
-		tableList.get(row).setAttribute( column,value);
+		tableList.get(row).setAttribute(column, value);
 	}
 
 	public int getRowCount() {
@@ -127,7 +127,7 @@ public class StocModel {
 		builder.append("Categorie: " + categorie.getValue() + "\n");
 		builder.append("Pret: " + pret.getValue() + "\n");
 		builder.append("Cod: " + cod.getValue() + "\n");
-		builder.append("Data: "+ data.getValue()+ "\n");
+		builder.append("Data: " + data.getValue() + "\n");
 		builder.append("Tabel: \n");
 		for (DistributieMagazinModel row : tableList) {
 			builder.append("  Magazin: " + row.getMagazin() + "\n");
