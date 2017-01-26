@@ -10,7 +10,7 @@ import javax.swing.WindowConstants;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 	private static final String APP_TITLE = "Aplicatie";
-	private static final String ICON_PATH = "resources/Wolf.png";
+	private static final String ICON_PATH = "Stoc/resources/Wolf.png";
 
 	public MainFrame() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

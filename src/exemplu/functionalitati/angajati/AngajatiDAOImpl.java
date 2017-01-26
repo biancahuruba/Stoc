@@ -266,5 +266,78 @@ public class AngajatiDAOImpl implements AngajatiDAO {
 		}
 		return null;
 	}
+	
+	public List<AngajatiModel> search(String numeValue, String prenumeValue) {
+		Connection dbConnection = null;
+		Statement stat = null;
+		ResultSet rs = null;
+
+		List<AngajatiModel> list = new ArrayList<>();
+
+		try {
+			Class.forName("org.sqlite.JDBC");
+			dbConnection = DriverManager.getConnection("jdbc:sqlite:Stoc/resources/database/test.db");
+			dbConnection.setAutoCommit(false);
+			System.out.println("Opened database successfully");
+			stat = dbConnection.createStatement();
+			String sql = "SELECT * FROM ANGAJATI;";
+
+			rs = stat.executeQuery(sql);
+
+			while (rs.next()) {
+				AngajatiRow angajatiRow = new AngajatiRow();
+				List<AngajatiRow> tabelModel = new ArrayList<>();
+				AngajatiModel angajat = new AngajatiModel();
+
+				Attribute aNume = new Attribute();
+				Attribute aPrenume = new Attribute();
+
+				aNume.setValue(rs.getString("NUME"));
+				angajat.setNume(aNume);
+
+				aPrenume.setValue(rs.getString("PRENUME"));
+				angajat.setPrenume(aPrenume);
+
+				angajatiRow.getAttribute(0).setValue(rs.getString("PRODUS"));
+				angajatiRow.getAttribute(1).setValue(rs.getString("PRET"));
+				angajatiRow.getAttribute(2).setValue(rs.getString("CANTITATE"));
+				angajatiRow.getAttribute(3).setValue(rs.getString("COMISION"));
+
+				tabelModel.add(angajatiRow);
+
+				angajat.setTabelModel(tabelModel);
+
+				list.add(angajat);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (stat != null) {
+				try {
+					stat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (dbConnection != null) {
+				try {
+					dbConnection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+	}
 
 }

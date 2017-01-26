@@ -1,7 +1,7 @@
 package exemplu.common.interfaces;
 
-import javax.swing.JPanel;
+import java.awt.Component;
 
 public interface ControllerInterface {
-	public JPanel getView();
+	public Component getView();
 }

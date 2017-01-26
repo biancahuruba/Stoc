@@ -1,5 +1,6 @@
 package exemplu.functionalitati.angajati;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -37,21 +38,22 @@ public class AngajatiView extends JPanel {
 		jTextFieldPrenume.getDocument().addDocumentListener(listener);
 
 		table = new JTable();
-		add(new JScrollPane(table), getFillerConstraints(2, 0));
+		add(new JScrollPane(table), getFillerConstraints(3, 0));
 
 	}
 
 	private void initFieldNume() {
-		final JLabel jLabelNume = new JLabel("Nume:");
+		final JLabel jLabelNume = new JLabel("Nume:   ");
 		add(jLabelNume, getConstraints(0, 0));
 		jTextFieldNume = new JTextField(20);
 		jTextFieldNume.getDocument().putProperty(FIELD_KEY, FIELD_NUME);
+
 		add(jTextFieldNume, getConstraints(0, 1));
 
 	}
 
 	private void initFieldPrenume() {
-		final JLabel jLabelPrenume = new JLabel("Prenume:");
+		final JLabel jLabelPrenume = new JLabel("Prenume:   ");
 		add(jLabelPrenume, getConstraints(1, 0));
 		jTextFieldPrenume = new JTextField(20);
 		jTextFieldPrenume.getDocument().putProperty(FIELD_KEY, FIELD_PRENUME);
@@ -61,17 +63,18 @@ public class AngajatiView extends JPanel {
 	private void initButton(final ActionListener actionListener) {
 		final JButton jButtonSave = new JButton("Salvare");
 		jButtonSave.addActionListener(actionListener);
-		add(jButtonSave, getConstraints(3, 0));
-		
-		final JButton jButtonEdit= new JButton("Editare");
+		add(jButtonSave, getConstraints(4, 0));
+
+		final JButton jButtonEdit = new JButton("Editare");
 		jButtonEdit.addActionListener(actionListener);
-		add(jButtonEdit, getConstraints(3,1));
-		
-		final JButton jButtonDelete= new JButton("Stergere");
+		add(jButtonEdit, getConstraints(4, 1));
+
+		final JButton jButtonDelete = new JButton("Stergere");
 		jButtonDelete.addActionListener(actionListener);
-		add(jButtonDelete, getConstraints(3,2,13));
+		add(jButtonDelete, getConstraints(4, 2, 13));
 
 	}
+
 	private GridBagConstraints getConstraints(final int row, final int column) {
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = column;
@@ -80,7 +83,7 @@ public class AngajatiView extends JPanel {
 		constraints.insets = INSETS_DEFAULT;
 		return constraints;
 	}
-	
+
 	private GridBagConstraints getConstraints(final int row, final int column, int constrains) {
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = column;
@@ -89,8 +92,6 @@ public class AngajatiView extends JPanel {
 		constraints.insets = INSETS_DEFAULT;
 		return constraints;
 	}
-	
-	
 
 	private GridBagConstraints getFillerConstraints(final int row, final int column) {
 		final GridBagConstraints constraints = new GridBagConstraints();

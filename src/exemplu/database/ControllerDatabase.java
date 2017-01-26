@@ -4,71 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import exemplu.common.models.Attribute;
-import exemplu.functionalitati.stoc.DistributieMagazinModel;
-import exemplu.functionalitati.stoc.StocDAOImpl;
-import exemplu.functionalitati.stoc.StocModel;
 
 public class ControllerDatabase {
 	private static final String DATABASE_LOCATION = "jdbc:sqlite:Stoc/resources/database/test.db";
 
 	public static void main(String args[]) {
-		// createTables();
-		// insertData();
-		// readData();
-		StocDAOImpl dao = new StocDAOImpl();
-		StocModel stoc = new StocModel();
-
-		Attribute produs = new Attribute();
-		Attribute categorie = new Attribute();
-		Attribute pret = new Attribute();
-		Attribute cod = new Attribute();
-
-		List<DistributieMagazinModel> tableList = new ArrayList<DistributieMagazinModel>();
-		DistributieMagazinModel distributie = new DistributieMagazinModel();
-
-		Attribute magazin = new Attribute();
-		Attribute localitate = new Attribute();
-		Attribute cantitate = new Attribute();
-
-		produs.setValue("apa");
-		categorie.setValue("apa 1");
-		pret.setValue("2");
-		cod.setValue("10jjsb");
-
-		magazin.setValue("abc");
-		localitate.setValue("Rosiori");
-		cantitate.setValue("10");
-
-		distributie.setMagazin(magazin);
-		distributie.setLocalitate(localitate);
-		distributie.setCantitate(cantitate);
-
-		tableList.add(distributie);
-
-		stoc.setCategorie(categorie);
-		stoc.setCod(cod);
-		stoc.setPret(pret);
-		stoc.setProdus(produs);
-		stoc.setTableList(tableList);
-
-		// dao.insertData(stoc);
-		List<Integer> list = dao.listOfId();
-		int row=list.size();
-		List<StocModel> lAngajat = new ArrayList<StocModel>();
-		lAngajat = dao.readData();
-		int j=0;
-		while (j < row) {
-			for (StocModel angajatFromL : lAngajat) {
-				System.out.print(list.get(j) + ".");
-				System.out.println(angajatFromL.toString());
-				j++;
-			}
-		}
-
 	}
 
 	public static void createTables() {
@@ -81,24 +21,15 @@ public class ControllerDatabase {
 
 			stmt = c.createStatement();
 
-			// String sql = "CREATE TABLE ANGAJATI" + "(ID INTEGER PRIMARY KEY
-			// AUTOINCREMENT NOT NULL,"
-			// + "NUME VARCHAR(40)," + "PRENUME VARCHAR(40)," + "PRODUS
-			// VARCHAR(40),"
-			// + "PRET VARCHAR(40)," + "CANTITATE VARCHAR(40)," + "COMISION
-			// VARCHAR(40))";
-
 			String sql = "CREATE TABLE ANGAJATI" + "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
 					+ "NUME VARCHAR(40)," + "PRENUME VARCHAR(40)," + "PRODUS VARCHAR(40)," + "PRET VARCHAR(40),"
 					+ "CANTITATE VARCHAR(40)," + "COMISION VARCHAR(40))";
-
 			stmt.executeUpdate(sql);
 
 			sql = "CREATE TABLE STOC" + "(ID INTEGER PRIMARY KEY  AUTOINCREMENT   NOT NULL," + "PRODUS   VARCHAR(40),"
 					+ "CATEGORIE     VARCHAR(40)," + "PRET    VARCHAR(40)," + "COD   VARCHAR(40),"
 					+ "DATA   VARCHAR(40)," + "MAGAZIN   VARCHAR(40)," + "LOCALITATE VARCHAR(40),"
 					+ "CANTITATE VARCHAR(40))";
-
 			stmt.executeUpdate(sql);
 
 			stmt.close();
@@ -121,6 +52,7 @@ public class ControllerDatabase {
 			System.out.println("Opened database successfully");
 
 			stmt = c.createStatement();
+			
 			String sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "
 					+ "VALUES (1, 'Paul', 32, 'California', 20000.00 );";
 			stmt.executeUpdate(sql);
