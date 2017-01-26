@@ -15,16 +15,22 @@ import javax.swing.JToolBar;
 @SuppressWarnings("serial")
 public class ApplicationToolBar extends JToolBar {
 	public static final String COMBO_TIP = "Combo Tip";
+	public static final String TBCLEAR ="\u2713";
 	private JComboBox<String> combo;
 	private JButton search;
 	private JButton clear;
 	private JButton advanced;
 	private JPanel container;
 	private ActionListener actionListener;
+	private JTextField produs;
+	private JTextField pret;
+	private JTextField nume;
+	private JTextField prenume;
 
 	public ApplicationToolBar() {
 		setLayout(new GridBagLayout());
 		setVisible(true);
+		initTextFields();
 		initCombo();
 		GridBagConstraints ctContainer = new GridBagConstraints();
 		ctContainer.weightx = 1;
@@ -33,6 +39,12 @@ public class ApplicationToolBar extends JToolBar {
 		container.setBorder(BorderFactory.createEmptyBorder());
 		add(container, ctContainer);
 		addButtons();
+	}
+	private void initTextFields(){
+		produs= new JTextField(15);
+		pret= new JTextField(15);
+		nume= new JTextField(15);
+		prenume= new JTextField(15);;
 	}
 
 	private void initCombo() {
@@ -46,23 +58,21 @@ public class ApplicationToolBar extends JToolBar {
 
 	public void addFieldsTipAngajat() {
 		container.removeAll();
-		addNewTextField("Nume");
-		addNewTextField("Prenume");
+		addNewTextField("Nume", nume);
+		addNewTextField("Prenume",prenume);
 		container.repaint();
 		container.revalidate();
 	}
 
 	public void addFieldsTipStoc() {
 		container.removeAll();
-		addNewTextField("Produs");
-		addNewTextField("Pret");
+		addNewTextField("Produs",produs);
+		addNewTextField("Pret",pret);
 	}
 
-	public void addNewTextField(String name) {
+	public void addNewTextField(String name, JTextField textField) {
 		JLabel label = new JLabel(name);
 		container.add(label);
-
-		JTextField textField = new JTextField(15);
 		container.add(textField);
 		container.validate();
 		validate();
@@ -70,13 +80,14 @@ public class ApplicationToolBar extends JToolBar {
 	}
 
 	public void addButtons() {
-		clear = new JButton("\u2713");
-		clear.addActionListener(actionListener);
-		add(clear);
-
-		search = new JButton("\u2717");
-		clear.addActionListener(actionListener);
+		search = new JButton("\u2713");
+		search.addActionListener(actionListener);
 		add(search);
+
+		clear = new JButton("\u2717");
+		clear.addActionListener(actionListener);
+		clear.setActionCommand(TBCLEAR);
+		add(clear);
 
 		advanced = new JButton("\uDC40");
 		advanced.addActionListener(actionListener);
@@ -98,6 +109,42 @@ public class ApplicationToolBar extends JToolBar {
 	public void setActionListener(ActionListener newactionListener) {
 		combo.removeActionListener(actionListener);
 		combo.addActionListener(newactionListener);
+		
+		clear.removeActionListener(actionListener);
+		clear.addActionListener(newactionListener);
 		actionListener = newactionListener;
 	}
+
+	public JTextField getProdus() {
+		return produs;
+	}
+
+	public void setProdus(JTextField produs) {
+		this.produs = produs;
+	}
+
+	public JTextField getPret() {
+		return pret;
+	}
+
+	public void setPret(JTextField pret) {
+		this.pret = pret;
+	}
+
+	public JTextField getNume() {
+		return nume;
+	}
+
+	public void setNume(JTextField nume) {
+		this.nume = nume;
+	}
+
+	public JTextField getPrenume() {
+		return prenume;
+	}
+
+	public void setPrenume(JTextField prenume) {
+		this.prenume = prenume;
+	}
+	
 }

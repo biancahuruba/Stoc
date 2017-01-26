@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import exemplu.common.interfaces.ControllerInterface;
 import exemplu.common.util.ControllerFactory;
 import exemplu.functionalitati.toolbar.AplicationToolBarController;
-import exemplu.functionalitati.toolbar.ApplicationToolBar;
 
 public class MainController implements ActionListener {
 	private MainView view;
@@ -35,9 +34,6 @@ public class MainController implements ActionListener {
 		switch (actionCommand) {
 		case ApplicationMenu.COMMAND_EXIT:
 			System.exit(0);
-			break;
-		case ApplicationToolBar.COMBO_TIP:
-			controllerToolbar.actionPerformed(event);
 			break;
 		default:
 			currentController = ControllerFactory.getController(actionCommand);
