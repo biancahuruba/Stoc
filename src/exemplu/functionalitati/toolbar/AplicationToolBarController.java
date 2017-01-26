@@ -37,7 +37,6 @@ public class AplicationToolBarController implements ControllerInterface, ActionL
 			}
 		}
 		if (e.getActionCommand().equals(ApplicationToolBar.TBCLEAR)) {
-			System.err.println("Clear");
 			if ("Stoc".equals(caseCombo)) {
 				toolBar.getProdus().setText("");
 				toolBar.getPret().setText("");
@@ -46,6 +45,10 @@ public class AplicationToolBarController implements ControllerInterface, ActionL
 				toolBar.getNume().setText("");
 				toolBar.getPrenume().setText("");
 			}
+		}
+		if (e.getActionCommand().equals(ApplicationToolBar.TBSEARCH)) {
+			CautareStocController controller = new CautareStocController();
+			controller.actionPerformed(e);
 		}
 	}
 

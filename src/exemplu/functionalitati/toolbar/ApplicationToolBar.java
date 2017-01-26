@@ -15,7 +15,8 @@ import javax.swing.JToolBar;
 @SuppressWarnings("serial")
 public class ApplicationToolBar extends JToolBar {
 	public static final String COMBO_TIP = "Combo Tip";
-	public static final String TBCLEAR ="\u2713";
+	public static final String TBCLEAR = "\u2717";
+	public static final String TBSEARCH = "\u2713";
 	private JComboBox<String> combo;
 	private JButton search;
 	private JButton clear;
@@ -40,11 +41,13 @@ public class ApplicationToolBar extends JToolBar {
 		add(container, ctContainer);
 		addButtons();
 	}
-	private void initTextFields(){
-		produs= new JTextField(15);
-		pret= new JTextField(15);
-		nume= new JTextField(15);
-		prenume= new JTextField(15);;
+
+	private void initTextFields() {
+		produs = new JTextField(15);
+		pret = new JTextField(15);
+		nume = new JTextField(15);
+		prenume = new JTextField(15);
+		;
 	}
 
 	private void initCombo() {
@@ -59,15 +62,15 @@ public class ApplicationToolBar extends JToolBar {
 	public void addFieldsTipAngajat() {
 		container.removeAll();
 		addNewTextField("Nume", nume);
-		addNewTextField("Prenume",prenume);
+		addNewTextField("Prenume", prenume);
 		container.repaint();
 		container.revalidate();
 	}
 
 	public void addFieldsTipStoc() {
 		container.removeAll();
-		addNewTextField("Produs",produs);
-		addNewTextField("Pret",pret);
+		addNewTextField("Produs", produs);
+		addNewTextField("Pret", pret);
 	}
 
 	public void addNewTextField(String name, JTextField textField) {
@@ -82,6 +85,7 @@ public class ApplicationToolBar extends JToolBar {
 	public void addButtons() {
 		search = new JButton("\u2713");
 		search.addActionListener(actionListener);
+		search.setActionCommand(TBSEARCH);
 		add(search);
 
 		clear = new JButton("\u2717");
@@ -109,7 +113,7 @@ public class ApplicationToolBar extends JToolBar {
 	public void setActionListener(ActionListener newactionListener) {
 		combo.removeActionListener(actionListener);
 		combo.addActionListener(newactionListener);
-		
+
 		clear.removeActionListener(actionListener);
 		clear.addActionListener(newactionListener);
 		actionListener = newactionListener;
@@ -146,5 +150,5 @@ public class ApplicationToolBar extends JToolBar {
 	public void setPrenume(JTextField prenume) {
 		this.prenume = prenume;
 	}
-	
+
 }
