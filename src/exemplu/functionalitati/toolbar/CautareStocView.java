@@ -34,11 +34,8 @@ public class CautareStocView extends JPanel {
 		constraints.gridwidth = GridBagConstraints.REMAINDER;
 		return constraints;
 	}
-	
+
 	public void setTableModel(final GenericTableModel<?> model) {
 		table.setModel(model);
-	}
-	
-	public void addRow(){
 	}
 }

@@ -54,6 +54,9 @@ public class CautareStocController implements ControllerInterface, ActionListene
 	public void actionPerformed(ActionEvent e) {
 		 if ("Stoc".equals(e.getActionCommand())) {
 			 List<StocModel> list=dao.search(toolBar.getProdus().getText(), toolBar.getPret().getText());
+			 for(StocModel model : list){
+				 
+			 }
 		 }
 		 if ("Angajati".equals(e.getActionCommand())) {
 		 }
